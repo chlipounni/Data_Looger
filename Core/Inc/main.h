@@ -58,38 +58,14 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define AIN8_Pin GPIO_PIN_0
-#define AIN8_GPIO_Port GPIOC
-#define AIN9_Pin GPIO_PIN_1
-#define AIN9_GPIO_Port GPIOC
 #define AIN0_Pin GPIO_PIN_2
 #define AIN0_GPIO_Port GPIOC
 #define AIN1_Pin GPIO_PIN_3
 #define AIN1_GPIO_Port GPIOC
-#define AIN12_Pin GPIO_PIN_0
-#define AIN12_GPIO_Port GPIOA
-#define AIN13_Pin GPIO_PIN_1
-#define AIN13_GPIO_Port GPIOA
-#define AIN10_Pin GPIO_PIN_2
-#define AIN10_GPIO_Port GPIOA
-#define AIN11_Pin GPIO_PIN_3
-#define AIN11_GPIO_Port GPIOA
-#define AIN14_Pin GPIO_PIN_4
-#define AIN14_GPIO_Port GPIOA
-#define AIN15_Pin GPIO_PIN_5
-#define AIN15_GPIO_Port GPIOA
 #define AIN2_Pin GPIO_PIN_6
 #define AIN2_GPIO_Port GPIOA
-#define AIN5_Pin GPIO_PIN_7
-#define AIN5_GPIO_Port GPIOA
 #define AIN3_Pin GPIO_PIN_4
 #define AIN3_GPIO_Port GPIOC
-#define AIN6_Pin GPIO_PIN_5
-#define AIN6_GPIO_Port GPIOC
-#define AIN7_Pin GPIO_PIN_0
-#define AIN7_GPIO_Port GPIOB
-#define AIN4_Pin GPIO_PIN_1
-#define AIN4_GPIO_Port GPIOB
 #define LED4_Pin GPIO_PIN_12
 #define LED4_GPIO_Port GPIOB
 #define LED5_Pin GPIO_PIN_13
