@@ -17,3 +17,18 @@ extern "C" void HAL_ADC_ConvHalfCpltCallback(ADC_HandleTypeDef * hadc)
         dmaIrqCounterAdc2++;
     }
 }
+
+extern "C" void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef * hadc)
+{
+    static uint32_t dmaIrqCounterAdc1 = 0;
+    static uint32_t dmaIrqCounterAdc2 = 0;
+
+    if (hadc == &hadc1)
+    {
+        dmaIrqCounterAdc1++;
+    }
+    else if (hadc == &hadc3)
+    {
+        dmaIrqCounterAdc2++;
+    }
+}

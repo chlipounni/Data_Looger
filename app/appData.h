@@ -10,29 +10,32 @@
 
 #include <stdint.h>
 
+#define adc1Size 2
+#define adc2Size 2
+
 class appData {
 public:
 	appData();
 	virtual ~appData();
 
 //dataSave
-	uint8_t adc1CH[13];
+	uint8_t adc1CH[adc1Size];
+	uint8_t adc3CH[adc2Size];
 
 	uint16_t tm1Precale;
 	uint16_t tm2Precale;
 
-	uint8_t ch1VA;
-	uint8_t ch1Amp;
-	uint8_t ch2VA;
-	uint8_t ch2Amp;
-	uint8_t ch3VA;
-	uint8_t ch3Amp;
-	uint8_t ch4VA;
-	uint8_t ch4Amp;
+	uint8_t Amp0;
+	uint8_t Amp1;
+	uint8_t Amp2;
+	uint8_t Amp3;
+	uint8_t AV0;
+	uint8_t AV1;
 
 //data note save
 	uint16_t levelBatt;
-	uint8_t numRank;
+	uint8_t numRankADC1;
+	uint8_t numRankADC3;
 };
 
 #endif /* APPDATA_H_ */

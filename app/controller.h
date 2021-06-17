@@ -11,26 +11,20 @@
 #include "cardSDRW.h"
 #include "appData.h"
 
-#define enCH1_GPIO
-#define enCH1
-#define CH1VA_GPIO
-#define CH1VA
-#define enCH2_GPIO
-#define enCH2
-#define CH2VA_GPIO
-#define CH2VA
-#define enCH3_GPIO
-#define enCH3
-#define CH3VA_GPIO
-#define CH3VA
-#define enCH4_GPIO
-#define enCH4
-#define CH4VA_GPIO
-#define CH4VA
-#define CHA0_GPIO
-#define CHA1_GPIO
-#define CHA0
-#define CHA1
+#define Amp_0_GPIO PB6_GPIO
+#define Amp_0 PB6
+#define AV_0_GPIO PB8_GPIO
+#define AV_0 PB8
+#define Amp_1_GPIO PE11_GPIO
+#define Amp_1 PE11
+#define AV_1_GPIO PE9_GPIO
+#define AV_1 PE9
+#define Amp_2_GPIO PE0_GPIO
+#define Amp_2 PE0
+#define Amp_3_GPIO PE7_GPIO
+#define Amp_3 PE7
+
+
 
 class controller {
 public:
@@ -54,7 +48,7 @@ private:
 	uint16_t midValue(uint8_t ch, uint8_t vers,uint16_t pos, uint16_t size);
 	//
 	void nivBatt ();
-	void selectTM(uint8_t tm, uint8_t ch);
+	void selectTM(uint8_t adc, uint8_t ch,uint8_t use);
 	void paramCH(uint8_t ch, uint8_t va, uint8_t amp);
 	void paramTM(uint8_t tm, uint32_t prescale);
 

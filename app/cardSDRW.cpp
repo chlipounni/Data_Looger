@@ -22,7 +22,7 @@ cardSDRW::~cardSDRW() {
 }
 
 void cardSDRW::saveParam(uint16_t pos, uint16_t data){
-	openParam(pos);
+	openParam();
 	//Write to the text file
 	f_lseek (&SDFile, pos);
 	f_write(&SDFile, &data, 1, (void *)&byteswritten);
@@ -37,26 +37,26 @@ void cardSDRW::saveData(uint8_t ch, uint16_t data){
 	f_close(&SDFile);
 }
 
-void cardSDRW::loadParam(uint8_t ch,uint32_t pos, uint32_t size){
+void cardSDRW::loadParam(uint32_t pos, uint32_t size){
 
-	for (var = 0; var < size; ++var) {
+	for (uint16_t var = 0; var < size; ++var) {
 		rtext[var]=0;
 	}
 
-	openParam(ch);
+	openParam();
 	//pos en byte !!!
 	f_lseek (&SDFile, pos*2);
 	f_read(&SDFile, rtext, size, bytesread);
 	f_close(&SDFile);
 }
 
-void cardSDRW::loadData(uint8_t ch,uint32_t pos, uint32_t size){
+void cardSDRW::loadData(uint8_t ch,uint8_t ver,uint32_t pos, uint32_t size){
 
-	for (var = 0; var < size; ++var) {
+	for (uint16_t var = 0; var < size; ++var) {
 		rtext[var]=0;
 	}
 
-	openCH(ch);
+	openCH(ch, ver);
 	//pos en byte !!!
 	f_lseek (&SDFile, pos*2);
 	f_read(&SDFile, rtext, size, bytesread);
@@ -87,8 +87,8 @@ uint16_t cardSDRW::sizeVersion(uint8_t ch){
 			result++;
 			f_close(&SDFile);
 		}
-
 	}while(result == FR_OK);
+
 	return result;
 }
 
@@ -100,7 +100,7 @@ void cardSDRW::openParam(){
 }
 
 void cardSDRW::openCH(uint8_t ch){
-	if(ch<1 || ch>13){
+	if(ch<1 || ch>19){
 		Error_Handler();
 	}
 
@@ -110,7 +110,7 @@ void cardSDRW::openCH(uint8_t ch){
 }
 
 void cardSDRW::openCH(uint8_t ch,uint8_t vers){
-	if(ch<1 || ch>13){
+	if(ch<1 || ch>4){
 		Error_Handler();
 	}
 	char* name [10] = "";
@@ -121,14 +121,13 @@ void cardSDRW::openCH(uint8_t ch,uint8_t vers){
 }
 
 void cardSDRW::updateName(){
-	char* name [10];
+	char name [10];
 	uint16_t num;
 	FRESULT result;
 
-	for(uint8_t x = 0; x<13 ;x++){
+	for(uint8_t x = 0; x<4 ;x++){
 		name = "";
 		num = 0;
-		result;
 		do{
 			num++;
 			sprintf(name,"ch%d_%d.txt",x ,num);
@@ -157,6 +156,8 @@ uint16_t cardSDRW::levelSD(){
 	       fre_sect = fre_clust * fs->csize;
 
 	       /* Print the free space (assuming 512 bytes/sector) */
-	       printf("%10lu KiB total drive space.\n%10lu KiB available.\n", tot_sect / 2, fre_sect / 2);
+	       //printf("%10lu KiB total drive space.\n%10lu KiB available.\n", tot_sect / 2, fre_sect / 2);
+
+	       return (fre_sect *100)/tot_sect;
 }
 
