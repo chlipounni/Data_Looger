@@ -15,12 +15,12 @@
 #define Amp_0 PB6
 #define AV_0_GPIO PB8_GPIO
 #define AV_0 PB8
-#define Amp_1_GPIO PE11_GPIO
-#define Amp_1 PE11
-#define AV_1_GPIO PE9_GPIO
-#define AV_1 PE9
-#define Amp_2_GPIO PE0_GPIO
-#define Amp_2 PE0
+#define Amp_1_GPIO PE0_GPIO
+#define Amp_1 PE0
+#define AV_2_GPIO PE9_GPIO
+#define AV_2 PE9
+#define Amp_2_GPIO PE11_GPIO
+#define Amp_2 PE11
 #define Amp_3_GPIO PE7_GPIO
 #define Amp_3 PE7
 
@@ -31,16 +31,16 @@ public:
 	controller();
 	virtual ~controller();
 	
-	void dataMain();
+// Data
+	void saveData(uint8_t adc, uint8_t half);
 
+	uint8_t recept;
 private:
 
 	// Param 
 	void loadParam();
 	void appliParam();
 	void saveParam();
-	// Data
-	void saveData();
 	
 	// calcul value
 	uint16_t maxValue(uint8_t ch, uint8_t vers, uint16_t pos, uint16_t size);
@@ -54,8 +54,6 @@ private:
 
 	//reception
 	void dataRecept();
-	uint8_t recept;
-	uint8_t dataV;
 
 	void startM();
 	void stopM();

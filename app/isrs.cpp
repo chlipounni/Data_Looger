@@ -5,30 +5,24 @@ extern "C" ADC_HandleTypeDef hadc3;
 
 extern "C" void HAL_ADC_ConvHalfCpltCallback(ADC_HandleTypeDef * hadc)
 {
-    static uint32_t dmaIrqCounterAdc1 = 0;
-    static uint32_t dmaIrqCounterAdc2 = 0;
-
     if (hadc == &hadc1)
     {
-        dmaIrqCounterAdc1++;
+        control.saveData(1,1);
     }
     else if (hadc == &hadc3)
     {
-        dmaIrqCounterAdc2++;
+        control.saveData(3,1);
     }
 }
 
 extern "C" void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef * hadc)
 {
-    static uint32_t dmaIrqCounterAdc1 = 0;
-    static uint32_t dmaIrqCounterAdc2 = 0;
-
-    if (hadc == &hadc1)
-    {
-        dmaIrqCounterAdc1++;
-    }
-    else if (hadc == &hadc3)
-    {
-        dmaIrqCounterAdc2++;
-    }
-}
+	 if (hadc == &hadc1)
+	    {
+	        control.saveData(1,0);
+	    }
+	    else if (hadc == &hadc3)
+	    {
+	        control.saveData(3,0);
+	    }
+	}

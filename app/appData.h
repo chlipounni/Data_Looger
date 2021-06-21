@@ -1,10 +1,3 @@
-/*
- * appData.h
- *
- *  Created on: 26 mai 2021
- *      Author: antoine
- */
-
 #ifndef APPDATA_H_
 #define APPDATA_H_
 
@@ -18,7 +11,7 @@ public:
 	appData();
 	virtual ~appData();
 
-//dataSave
+	//dataSave
 	uint8_t adc1CH[adc1Size];
 	uint8_t adc3CH[adc2Size];
 
@@ -30,12 +23,13 @@ public:
 	uint8_t Amp2;
 	uint8_t Amp3;
 	uint8_t AV0;
-	uint8_t AV1;
+	uint8_t AV2;
 
-//data note save
+	//data note save
 	uint16_t levelBatt;
 	uint8_t numRankADC1;
 	uint8_t numRankADC3;
 };
 
 #endif /* APPDATA_H_ */
+
