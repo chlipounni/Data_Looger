@@ -1,5 +1,5 @@
-#ifndef APPDATA_H_
-#define APPDATA_H_
+#ifndef APPDATA_H
+#define APPDATA_H
 
 #include <stdint.h>
 
@@ -31,5 +31,5 @@ public:
 	uint8_t numRankADC3;
 };
 
-#endif /* APPDATA_H_ */
+#endif /* APPDATA_H */
 

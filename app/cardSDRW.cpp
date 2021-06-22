@@ -25,7 +25,7 @@ void cardSDRW::saveParam(uint16_t pos, uint16_t data){
 	openParam();
 	//Write to the text file
 	f_lseek (&SDFile, pos);
-	f_write(&SDFile, &data, 1, (void *)&byteswritten);
+	f_write(&SDFile, &data, 1, (UINT*)&byteswritten);
 	f_close(&SDFile);
 }
 
@@ -33,7 +33,7 @@ void cardSDRW::saveData(uint8_t ch, uint16_t data){
 	openCH(ch);
 	//Write to the text file
 	f_lseek (&SDFile, f_size(&SDFile));
-	f_write(&SDFile, &data, 1, (void *)&byteswritten);
+	f_write(&SDFile, &data, 1, (UINT*)&byteswritten);
 	f_close(&SDFile);
 }
 
@@ -46,7 +46,7 @@ void cardSDRW::loadParam(uint32_t pos, uint32_t size){
 	openParam();
 	//pos en byte !!!
 	f_lseek (&SDFile, pos*2);
-	f_read(&SDFile, rtext, size, bytesread);
+	f_read(&SDFile, rtext, size, (UINT*) &bytesread);
 	f_close(&SDFile);
 }
 
@@ -59,12 +59,12 @@ void cardSDRW::loadData(uint8_t ch,uint8_t ver,uint32_t pos, uint32_t size){
 	openCH(ch, ver);
 	//pos en byte !!!
 	f_lseek (&SDFile, pos*2);
-	f_read(&SDFile, rtext, size, bytesread);
+	f_read(&SDFile, rtext, size, (UINT*) &bytesread);
 	f_close(&SDFile);
 }
 
 void cardSDRW::deleteData(uint8_t ch,uint8_t vers){
-	char* name [10];
+	char name [10];
 	sprintf(name,"ch%d_%d.txt",ch ,vers);
 	f_unlink (name);
 }
@@ -72,14 +72,14 @@ void cardSDRW::deleteData(uint8_t ch,uint8_t vers){
 uint16_t cardSDRW::sizeData(uint8_t ch,uint8_t vers){
 	uint16_t result = 0 ;
 	openCH(ch,vers);
-	result f_truncate (&SDFile);
+	result = f_truncate (&SDFile);
 	f_close(&SDFile);
 	return result;
 }
 
 uint16_t cardSDRW::sizeVersion(uint8_t ch){
 	uint16_t result = 0 ;
-	char* name [10];
+	char name [10];
 	do{
 		sprintf(name,"ch%d_%d.txt",ch ,result+1);
 		result = f_open(& SDFile, name, FA_OPEN_EXISTING);
@@ -113,7 +113,7 @@ void cardSDRW::openCH(uint8_t ch,uint8_t vers){
 	if(ch<1 || ch>4){
 		Error_Handler();
 	}
-	char* name [10] = "";
+	char name[20];
 	sprintf(name,"ch%d_%d.txt",ch ,vers);
 	if(f_open(& SDFile, name, FA_CREATE_ALWAYS | FA_WRITE | FA_READ) != (FR_OK)){
 		Error_Handler();
@@ -121,12 +121,12 @@ void cardSDRW::openCH(uint8_t ch,uint8_t vers){
 }
 
 void cardSDRW::updateName(){
-	char name [10];
+	char name [20];
 	uint16_t num;
 	FRESULT result;
 
 	for(uint8_t x = 0; x<4 ;x++){
-		name = "";
+		sprintf(name,"");
 		num = 0;
 		do{
 			num++;
@@ -135,7 +135,7 @@ void cardSDRW::updateName(){
 			if(result == FR_OK){f_close(&SDFile);}
 
 		}while(result == FR_OK);
-		nameFile[x]= name;
+		sprintf(nameFile[x],name);
 	}	
 }
 

@@ -5,8 +5,8 @@
  *      Author: antoine
  */
 
-#ifndef PROG_CARDSDRW_H_
-#define PROG_CARDSDRW_H_
+#ifndef CARDSDRW_H
+#define CARDSDRW_H
 
 #include <stdint.h>
 #include "fatfs.h"
@@ -33,7 +33,7 @@ public:
 	FRESULT res; /* FatFs function common result code */
 	uint32_t byteswritten, bytesread; /* File write/read counts */
 	uint16_t rtext[_MAX_SS];/* File read buffer */
-	char nameFile [19];
+	char nameFile [19][20];
 };
 
-#endif /* PROG_CARDSDRW_H_ */
+#endif /* CARDSDRW_H */

@@ -270,7 +270,7 @@ static int8_t CDC_Receive_FS(uint8_t* Buf, uint32_t *Len)
   USBD_CDC_SetRxBuffer(&hUsbDeviceFS, &Buf[0]);
   USBD_CDC_ReceivePacket(&hUsbDeviceFS);
 
-  memset (RX_message, '\0', 64);  // clear the buffer
+  memset (RX_message, '\0', sizeof(RX_message));  // clear the buffer
   uint8_t len = (uint8_t)*Len;
   memcpy(RX_message, Buf, len);  // copy the data to the buffer
   memset(Buf, '\0', len);   // clear the Buf also

@@ -1,4 +1,5 @@
 #include "controller.h"
+#include "usb_device.h"
 
 extern "C" ADC_HandleTypeDef hadc1;
 extern "C" ADC_HandleTypeDef hadc3;
@@ -67,71 +68,94 @@ void appliParam(){
 	htim2.Init.Prescaler = data.tm1Prescale;
 	htim3.Init.Prescaler = data.tm2Pprescale;
 
-	//CH1
+	//CH0
 	if(data.AV0){
-		HAL_GPIO_WritePin(AV_0_GPIO, AV_0, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(GPIOB, AV_0_Pin, GPIO_PIN_RESET);
 	}else{
-		HAL_GPIO_WritePin(AV_0_GPIO, AV_0, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(GPIOB, AV_0_Pin, GPIO_PIN_SET);
 	}
+
+	GPIO_InitStruct.Pin = Amp_0_Pin;
 	switch(data.Amp0){
 	default:
 	case 0:
-		HAL_GPIO_WritePin(Amp0_GPIO, Amp0, GPIO_PIN_SET);
+		GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
 		break;
 	case 1:
-		HAL_GPIO_WritePin(Amp0_GPIO, Amp0, GPIO_PIN_RESET);
+		GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+		HAL_GPIO_WritePin(GPIOB, Amp_0_Pin, GPIO_PIN_RESET);
 		break;
 	case 2:
-		HAL_GPIO_WritePin(Amp0_GPIO, Amp0, GPIO_PIN_SET);
+		GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+		HAL_GPIO_WritePin(GPIOB, Amp_0_Pin, GPIO_PIN_SET);
 		break;
 	}
+	HAL_GPIO_Init(Amp_0_GPIO_Port, &GPIO_InitStruct);
 
-	//CH2
+	//CH1
+	GPIO_InitStruct.Pin = Amp_1_Pin;
 	switch(data.Amp1){
 	default:
 	case 0:
-		HAL_GPIO_WritePin(Amp1_GPIO, Amp1, GPIO_PIN_SET);
+		GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
 		break;
 	case 1:
-		HAL_GPIO_WritePin(Amp1_GPIO, Amp1, GPIO_PIN_RESET);
+		GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+		HAL_GPIO_Init(Amp_1_GPIO_Port, &GPIO_InitStruct);
+		HAL_GPIO_WritePin(GPIOE, Amp_1_Pin, GPIO_PIN_RESET);
 		break;
 	case 2:
-		HAL_GPIO_WritePin(Amp1_GPIO, Amp1, GPIO_PIN_SET);
+		GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+		HAL_GPIO_Init(Amp_1_GPIO_Port, &GPIO_InitStruct);
+		HAL_GPIO_WritePin(GPIOE, Amp_1_Pin, GPIO_PIN_SET);
+		break;
+	}
+
+
+	//CH2
+	if(data.AV2){
+		HAL_GPIO_WritePin(GPIOE, AV_2_Pin, GPIO_PIN_RESET);
+	}else{
+		HAL_GPIO_WritePin(GPIOE, AV_2_Pin, GPIO_PIN_SET);
+	}
+
+	GPIO_InitStruct.Pin = Amp_2_Pin;
+	switch(data.Amp2){
+	default:
+	case 0:
+		GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
+		break;
+	case 1:
+		GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+		AL_GPIO_Init(Amp_2_GPIO_Port, &GPIO_InitStruct);
+		HAL_GPIO_WritePin(GPIOE, Amp_2_Pin, GPIO_PIN_RESET);
+		break;
+	case 2:
+		GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+		AL_GPIO_Init(Amp_2_GPIO_Port, &GPIO_InitStruct);
+		HAL_GPIO_WritePin(GPIOE, Amp_2_Pin, GPIO_PIN_SET);
 		break;
 	}
 
 	//CH3
-	if(data.AV2){
-		HAL_GPIO_WritePin(AV_2_GPIO, AV_2, GPIO_PIN_RESET);
-	}else{
-		HAL_GPIO_WritePin(AV_2_GPIO, AV_2, GPIO_PIN_SET);
-	}
-	switch(data.Amp2){
-	default:
-	case 0:
-		HAL_GPIO_WritePin(Amp2_GPIO, Amp2, GPIO_PIN_SET);
-		break;
-	case 1:
-		HAL_GPIO_WritePin(Amp2_GPIO, Amp2, GPIO_PIN_RESET);
-		break;
-	case 2:
-		HAL_GPIO_WritePin(Amp2_GPIO, Amp2, GPIO_PIN_SET);
-		break;
-	}
-
-	//CH4
+	GPIO_InitStruct.Pin = Amp_3_Pin;
 	switch(data.Amp3){
 	default:
 	case 0:
-		HAL_GPIO_WritePin(Amp3_GPIO, Amp3, GPIO_PIN_SET);
+		GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
 		break;
 	case 1:
-		HAL_GPIO_WritePin(Amp3_GPIO, Amp3, GPIO_PIN_RESET);
+		GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+		AL_GPIO_Init(Amp_3_GPIO_Port, &GPIO_InitStruct);
+		HAL_GPIO_WritePin(GPIOE, Amp_3_Pin, GPIO_PIN_RESET);
 		break;
 	case 2:
-		HAL_GPIO_WritePin(Amp3_GPIO, Amp3, GPIO_PIN_SET);
+		GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+		AL_GPIO_Init(Amp_3_GPIO_Port, &GPIO_InitStruct);
+		HAL_GPIO_WritePin(GPIOE, Amp_3_Pin, GPIO_PIN_SET);
 		break;
 	}
+
 
 	ADC_ChannelConfTypeDef sConfig = {0};
 	//nivBatt
@@ -262,7 +286,7 @@ uint16_t maxValue(uint8_t ch,uint8_t vers,uint16_t pos, uint16_t size){
 
 	sdCard.loadData(ch,vers,pos,size);
 	uint16_t val = sdCard.rtext[0];
-	for (uint32_t x = 1;  x< data.bytesread; x++) {
+	for (uint32_t x = 1;  x< sdCard.bytesread; x++) {
 		if (sdCard.rtext[x] > val)
 			val= sdCard.rtext[x];
 	}
@@ -286,12 +310,12 @@ uint16_t midValue(uint8_t ch,uint8_t vers,uint16_t pos, uint16_t size){
 	uint16_t sizeNum = 1;
 	uint64_t valFinal=0;
 	sdCard.loadData(ch,vers,pos,size);
-	for (uint32_t x = 0;  x< data.bytesread; x++) {
+	for (uint32_t x = 0;  x< sdCard.bytesread; x++) {
 		if ((sdCard.rtext[x] +valmid) >= 0xFFFF){
-			valFinal = valFinal+(valmild/num);
+			valFinal = valFinal+(valmid/num);
 			sizeNum++;
 			num=1;
-			valMid = sdCard.rtext[x];
+			valmid = sdCard.rtext[x];
 		}
 		else{
 			valmid = sdCard.rtext[x] + valmid;
@@ -349,20 +373,20 @@ void paramCH(uint8_t ch, uint8_t va, uint8_t amp){
 		break;
 	case 2:
 
-		Amp1 = amp;
+		data.Amp1 = amp;
 		sdCard.saveParam(4,amp);
 
 		break;
 	case 3:
-		AV2 = va;
+		data.AV2 = va;
 		sdCard.saveParam(5,va);
-		Amp2 = amp;
+		data.Amp2 = amp;
 		sdCard.saveParam(6,amp);
 
 		break;
 	case 4:
 
-		Amp3 = amp;
+		data.Amp3 = amp;
 		sdCard.saveParam(7,amp);
 		break;
 	default:
@@ -374,13 +398,13 @@ void paramTM(uint8_t tm, uint16_t prescale){
 	switch (tm) {
 	case 1:
 		data.tm1Precale =prescale;
-		htim2.Init.ClockPrescaler = prescale;
+		htim2.Init.Prescaler = prescale;
 		sdCard.saveParam(0,Precale);
 
 		break;
 	case 2:
 		data.tm2Precale =prescale;
-		htim3.Init.ClockPrescaler = prescale;
+		htim3.Init.Prescaler = prescale;
 		sdCard.saveParam(1,Precale);
 		break;
 	default:
@@ -408,94 +432,94 @@ void dataRecept(){
 
 		}
 		for(uint8_t x=0; x<5; x++){
-				TX_message[x]=0;
-			}
-
-			switch (RX_message[0]) {
-			case 0x01:
-				data.paramTM(RX_message[1],RX_message[2]);
-
-				TX_message[0]=0x10;
-				TX_message[1]=RX_message[1];
-
-				break;
-			case 0x02:
-				selectTM(RX_message[1], RX_message[2], RX_message[3]);
-
-				TX_message[0]=0x10;
-				TX_message[1]=RX_message[1];
-
-				break;
-			case 0x03:
-				paramCH(RX_message[1], RX_message[2],RX_message[3]);
-				TX_message[0]=0x10;
-				TX_message[1]=RX_message[1];
-
-				break;
-			case 0x04:
-				TX_message[0]=0x14;
-				TX_message[1]=RX_message[1];
-				TX_message[2]=RX_message[2];
-				TX_message[3]=midValue(RX_message[1], RX_message[2],RX_message[3],RX_message[4]);
-
-				break;
-			case 0x05:
-				TX_message[0]=0x15;
-				TX_message[1]=RX_message[1];
-				TX_message[2]=RX_message[2];
-				TX_message[3]=minValue(RX_message[1], RX_message[2],RX_message[3],RX_message[4]);
-
-				break;
-			case 0x06:
-				TX_message[0]=0x16;
-				TX_message[1]=RX_message[1];
-				TX_message[2]=RX_message[2];
-				TX_message[3]=maxValue(RX_message[1], RX_message[2],RX_message[3],RX_message[4]);
-
-				break;
-			case 0x07:
-				TX_message[0]=0x17;
-				TX_message[1]=RX_message[1];
-				TX_message[2]=RX_message[2];
-				TX_message[3]=midValue(RX_message[1], RX_message[2],RX_message[3],RX_message[4]);
-				TX_message[4]=minValue(RX_message[1], RX_message[2],RX_message[3],RX_message[4]);
-				TX_message[5]=maxValue(RX_message[1], RX_message[2],RX_message[3],RX_message[4]);
-
-				break;
-			case 0x08:
-
-				deleteData(RX_message[1],RX_message[2]);
-				TX_message[0]=0x10;
-				TX_message[1]=RX_message[1];
-
-				break;
-			case 0x09:
-
-				TX_message[0] = 0x19;
-				TX_message[1] = RX_message[1];
-				TX_message[2] = RX_message[2];
-				TX_message[3] = sdCard.sizeData(RX_message[1],RX_message[2]);
-
-				break;
-			case 0x0A:
-				TX_message[0]=0x1A;
-				TX_message[1] = RX_message[1];
-				TX_message[2]=data.sizeVersion(RX_message[1]);
-				break;
-
-			case 0x0F:
-				saveParam();
-
-				TX_message[0]=0x10;
-				TX_message[1]=RX_message[1];
-
-				break;
-			default:
-				TX_message[0]=0x11;
-				break;
-			}
-			CDC_Transmit_FS(TX_message, 5);
-			recept = 0;
+			TX_message[x]=0;
 		}
+
+		switch (RX_message[0]) {
+		case 0x01:
+			data.paramTM(RX_message[1],RX_message[2]);
+
+			TX_message[0]=0x10;
+			TX_message[1]=RX_message[1];
+
+			break;
+		case 0x02:
+			selectTM(RX_message[1], RX_message[2], RX_message[3]);
+
+			TX_message[0]=0x10;
+			TX_message[1]=RX_message[1];
+
+			break;
+		case 0x03:
+			paramCH(RX_message[1], RX_message[2],RX_message[3]);
+			TX_message[0]=0x10;
+			TX_message[1]=RX_message[1];
+
+			break;
+		case 0x04:
+			TX_message[0]=0x14;
+			TX_message[1]=RX_message[1];
+			TX_message[2]=RX_message[2];
+			TX_message[3]=midValue(RX_message[1], RX_message[2],RX_message[3],RX_message[4]);
+
+			break;
+		case 0x05:
+			TX_message[0]=0x15;
+			TX_message[1]=RX_message[1];
+			TX_message[2]=RX_message[2];
+			TX_message[3]=minValue(RX_message[1], RX_message[2],RX_message[3],RX_message[4]);
+
+			break;
+		case 0x06:
+			TX_message[0]=0x16;
+			TX_message[1]=RX_message[1];
+			TX_message[2]=RX_message[2];
+			TX_message[3]=maxValue(RX_message[1], RX_message[2],RX_message[3],RX_message[4]);
+
+			break;
+		case 0x07:
+			TX_message[0]=0x17;
+			TX_message[1]=RX_message[1];
+			TX_message[2]=RX_message[2];
+			TX_message[3]=midValue(RX_message[1], RX_message[2],RX_message[3],RX_message[4]);
+			TX_message[4]=minValue(RX_message[1], RX_message[2],RX_message[3],RX_message[4]);
+			TX_message[5]=maxValue(RX_message[1], RX_message[2],RX_message[3],RX_message[4]);
+
+			break;
+		case 0x08:
+
+			deleteData(RX_message[1],RX_message[2]);
+			TX_message[0]=0x10;
+			TX_message[1]=RX_message[1];
+
+			break;
+		case 0x09:
+
+			TX_message[0] = 0x19;
+			TX_message[1] = RX_message[1];
+			TX_message[2] = RX_message[2];
+			TX_message[3] = sdCard.sizeData(RX_message[1],RX_message[2]);
+
+			break;
+		case 0x0A:
+			TX_message[0]=0x1A;
+			TX_message[1] = RX_message[1];
+			TX_message[2]=data.sizeVersion(RX_message[1]);
+			break;
+
+		case 0x0F:
+			saveParam();
+
+			TX_message[0]=0x10;
+			TX_message[1]=RX_message[1];
+
+			break;
+		default:
+			TX_message[0]=0x11;
+			break;
+		}
+		CDC_Transmit_FS(TX_message, 5);
+		recept = 0;
 	}
+}
 
