@@ -50,7 +50,7 @@ private:
 	void loadParam();
 	void appliParam();
 	void saveAllParam();
-	void saveParam(uint16_t pos, uint32_t* data);
+	void saveParam(uint16_t pos, uint8_t* data);
 
 	cardSDRW* sdCard;
 	appData* data;
@@ -59,7 +59,7 @@ private:
 	uint32_t midAdd [2] ={0,0};
 	uint8_t offset;
 
-	void divMidMinMax(uint8_t adc,uint8_t divVer,uint8_t div, uint16_t* val);
+	void divMidMinMax(uint8_t adc,uint8_t divVer, uint16_t* val);
 	void messageOK();
 	void messageNOK();
 

@@ -4,9 +4,9 @@
 
 #include "cardSDRW.h"
 
-cardSDRW::cardSDRW()
+cardSDRW::cardSDRW(appData* pointData)
 {
-	data = new appData();
+	data = pointData;
 
 	if(f_mount(&SDFatFS, "", 0) != FR_OK)
 		Error_Handler();
@@ -27,7 +27,7 @@ void cardSDRW::openData()
 	if(data->numAdcCH[0]){
 		//adc1
 		sprintf(text,"0_%d_div0.smp",data->adc1Vers);
-		if( f_open(SDFile[0], text, FA_OPEN_ALWAYS | FA_WRITE | FA_READ ) != FR_OK)
+		if( f_open(SDFile[0], text, FA_CREATE_ALWAYS | FA_WRITE | FA_READ ) != FR_OK)
 			Error_Handler();
 		if(f_write(SDFile[0],(uint8_t*) data->numAdcCH[0], 1, &byteswritten) != FR_OK)
 			Error_Handler();
@@ -48,7 +48,7 @@ void cardSDRW::openData()
 	if(data->numAdcCH[1]){
 		//adc3
 		sprintf(text,"1_%d_div0.smp",data->adc3Vers);
-		if( f_open(SDFile[3], text, FA_OPEN_ALWAYS |  FA_WRITE |  FA_READ) != FR_OK)
+		if( f_open(SDFile[3], text, FA_CREATE_ALWAYS |  FA_WRITE |  FA_READ) != FR_OK)
 			Error_Handler();
 		if(f_write(SDFile[3],(uint8_t*) data->numAdcCH[1], 1, &byteswritten) != FR_OK)
 			Error_Handler();
@@ -102,7 +102,7 @@ void cardSDRW::deleteData(){
 
 void cardSDRW::saveData(uint8_t file,uint16_t size, uint16_t* data)
 {
-	if(f_write(SDFile[file],(void*) data, size*2, &byteswritten) != FR_OK)
+	if(f_write(SDFile[file],(void*) data, size, &byteswritten) != FR_OK)
 		Error_Handler();
 }
 
@@ -110,7 +110,7 @@ void cardSDRW::loadData(uint8_t file,uint32_t pos, uint16_t size)
 {
 	if(f_lseek (SDFile[file], pos) != FR_OK)
 		Error_Handler();
-	if(f_read(SDFile[file], rtext, size*2, (UINT*) &bytesread) != FR_OK)
+	if(f_read(SDFile[file], rtext, size, (UINT*) &bytesread) != FR_OK)
 		Error_Handler();
 }
 
@@ -123,7 +123,6 @@ void cardSDRW::closeData()
 		sprintf(text,"0_%d_div0.smp",data->adc1Vers);
 		if(f_stat (text, &fno) == FR_OK){
 			data->adc1Vers++;
-
 			//adc1
 			if( f_close(SDFile[0]) != FR_OK)
 				Error_Handler();
@@ -159,9 +158,9 @@ void cardSDRW::openDataFile(uint8_t adc, uint8_t vers, uint8_t div){
 
 void cardSDRW::loadDataFile(uint32_t pos, uint16_t size){
 	if(f_lseek (SDFile[6], pos) != FR_OK)
-			Error_Handler();
-		if(f_read(SDFile[6], rtext, size*2, (UINT*) &bytesread) != FR_OK)
-			Error_Handler();
+		Error_Handler();
+	if(f_read(SDFile[6], rtext, size*2, (UINT*) &bytesread) != FR_OK)
+		Error_Handler();
 }
 
 uint32_t cardSDRW::sizeData(uint8_t adc, uint8_t vers,uint8_t div)
@@ -175,6 +174,15 @@ uint32_t cardSDRW::sizeData(uint8_t adc, uint8_t vers,uint8_t div)
 	return fno.fsize;
 }
 
+FRESULT cardSDRW::lifeData(uint8_t adc, uint8_t vers,uint8_t div)
+{
+	//0-> adc1; 1-> adc3
+	FILINFO fno;
+	char text [20];
+	sprintf(text,"%d_%d_div%d.smp",adc,vers,div);
+	return  f_stat(text, &fno);
+}
+
 void cardSDRW::closeDataFile(){
 	if( f_close(SDFile[6]) != FR_OK)
 		Error_Handler();
@@ -182,7 +190,7 @@ void cardSDRW::closeDataFile(){
 
 void cardSDRW::openParam()
 {
-	if( f_open(paramFile, "param.par", FA_CREATE_ALWAYS | FA_WRITE | FA_READ) != FR_OK)
+	if( f_open(paramFile, "param.par", FA_OPEN_ALWAYS | FA_WRITE | FA_READ) != FR_OK)
 		Error_Handler();
 }
 
@@ -205,12 +213,13 @@ void cardSDRW::loadParam(uint16_t pos, uint16_t size)
 	//pos en byte !!!
 	f_lseek (paramFile, pos);
 	if(f_read(paramFile, rtext, size, (UINT*) &bytesread) != FR_OK)
-	Error_Handler();
+		Error_Handler();
 }
 
 void cardSDRW::saveParam(uint16_t pos, uint8_t* data, uint16_t size)
 {
 	//pos en byte !!!
 	f_lseek (paramFile, pos);
-	res =f_write(paramFile,(void*) data, size, &byteswritten);
+	if(f_write(paramFile,(void*) data, size, &byteswritten) != FR_OK)
+		Error_Handler();
 }

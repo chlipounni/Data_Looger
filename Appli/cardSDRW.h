@@ -18,7 +18,7 @@
 
 class cardSDRW {
 public:
-	cardSDRW();
+	cardSDRW(appData* pointData);
 	virtual ~cardSDRW();
 
 	//data
@@ -26,6 +26,7 @@ public:
 	void saveData(uint8_t file, uint16_t size, uint16_t* data);
 	void loadData(uint8_t file,uint32_t pos, uint16_t size);
 	uint32_t sizeData(uint8_t adc, uint8_t vers, uint8_t div);
+	FRESULT lifeData(uint8_t adc, uint8_t vers,uint8_t div);
 	void sync(uint8_t file);
 	void deleteData();
 	void closeData();

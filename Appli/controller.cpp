@@ -10,8 +10,8 @@ Controller* Controller::controller_ = nullptr;
 
 Controller::Controller()
 {
-	sdCard = new cardSDRW();
 	data = new appData();
+	sdCard = new cardSDRW(data);
 }
 
 Controller* Controller::GetInstance()
@@ -30,16 +30,17 @@ void Controller::init()
 
 void Controller::loadParam()
 {
-	uint16_t test = sdCard->sizeParam();
 	if(sdCard->sizeParam() == 18){
 		sdCard->openParam();
 		sdCard->loadParam( 0, 18);
+		data->tm1Prescale = 0;
 		for(uint8_t i = 0 ; i<4; i++){
-			data->tm1Prescale += (uint32_t)sdCard->rtext[3-i]<<(8*i);
+			data->tm1Prescale += (uint32_t)sdCard->rtext[0+i]<<(8*i);
 		}
 		data->adc1Vers = sdCard->rtext[4];
+		data->tm2Prescale = 0;
 		for(uint8_t i = 0 ; i<2; i++){
-			data->tm2Prescale += (uint16_t)sdCard->rtext[6-i]<<(8*i);
+			data->tm2Prescale += (uint16_t)sdCard->rtext[5+i]<<(8*i);
 		}
 		data->adc3Vers = sdCard->rtext[7];
 		//ADC1
@@ -170,31 +171,31 @@ void Controller::appliParam()
 
 void Controller::saveAllParam(){
 	sdCard->openParam();
-	sdCard->saveParam(0, (uint8_t*)&data->tm1Prescale,4);
-	sdCard->saveParam(4, (uint8_t*)&data->tm1Div,1);
-	sdCard->saveParam(5, (uint8_t*)&data->tm2Prescale,2);
-	sdCard->saveParam(7, (uint8_t*)&data->tm2Div,1);
-	sdCard->saveParam(8, (uint8_t*)&data->numAdcCH[0],1);
-	sdCard->saveParam(9, (uint8_t*)&data->adc1Vers,1);
-	sdCard->saveParam(10, (uint8_t*)&data->AV0,1);
-	sdCard->saveParam(11, (uint8_t*)&data->Amp0,1);
-	sdCard->saveParam(12, (uint8_t*)&data->Amp1,1);
-	sdCard->saveParam(13, (uint8_t*)&data->numAdcCH[1],1);
-	sdCard->saveParam(14, (uint8_t*)&data->adc3Vers,1);
-	sdCard->saveParam(15, (uint8_t*)&data->AV2,1);
-	sdCard->saveParam(16, (uint8_t*)&data->Amp2,1);
-	sdCard->saveParam(17, (uint8_t*)&data->Amp3,1);
+	sdCard->saveParam(0, (uint8_t*) &data->tm1Prescale,4);
+	sdCard->saveParam(4, &data->tm1Div,1);
+	sdCard->saveParam(5, (uint8_t*) &data->tm2Prescale,2);
+	sdCard->saveParam(7, &data->tm2Div,1);
+	sdCard->saveParam(8, &data->numAdcCH[0],1);
+	sdCard->saveParam(9, &data->adc1Vers,1);
+	sdCard->saveParam(10, &data->AV0,1);
+	sdCard->saveParam(11, &data->Amp0,1);
+	sdCard->saveParam(12, &data->Amp1,1);
+	sdCard->saveParam(13, &data->numAdcCH[1],1);
+	sdCard->saveParam(14, &data->adc3Vers,1);
+	sdCard->saveParam(15, &data->AV2,1);
+	sdCard->saveParam(16, &data->Amp2,1);
+	sdCard->saveParam(17, &data->Amp3,1);
 	sdCard->closeParam();
 }
 
-void Controller::saveParam(uint16_t pos, uint32_t* data){
+void Controller::saveParam(uint16_t pos, uint8_t* data){
 	sdCard->openParam();
 	if(pos==0){
-		sdCard->saveParam(pos, (uint8_t*)&data, 4);
+		sdCard->saveParam(pos, data, 4);
 	}else if(pos==5){
-		sdCard->saveParam(pos, (uint8_t*)&data, 2);
+		sdCard->saveParam(pos, data, 2);
 	}else{
-		sdCard->saveParam(pos, (uint8_t*)&data, 1);
+		sdCard->saveParam(pos, data, 1);
 	}
 
 	sdCard->closeParam();
@@ -205,7 +206,7 @@ void Controller::saveData(uint8_t adc,uint8_t full) {
 		if(full == 0) {
 			sdCard->saveData(0, ADC_BUFFER_SIZE, &adc1Buffer[0]);
 		} else {
-			sdCard->saveData(0, ADC_BUFFER_SIZE*4, &adc1Buffer[ADC_BUFFER_SIZE/2]);
+			sdCard->saveData(0, ADC_BUFFER_SIZE, &adc1Buffer[ADC_BUFFER_SIZE/2]);
 		}
 
 	}else if(adc == 3) {
@@ -229,6 +230,7 @@ void Controller::startData()
 void Controller::stopData()
 {
 	uint32_t nbData;
+
 	if(data->numAdcCH [0]){
 		HAL_TIM_OC_Stop_IT(&htim2, TIM_CHANNEL_2);   // For ADC1
 
@@ -237,36 +239,45 @@ void Controller::stopData()
 		HAL_TIM_OC_Stop_IT(&htim3, TIM_CHANNEL_4);   // For ADC3
 	}
 
-	if(data->numAdcCH [0]){
-		sdCard->sync(0);
-		nbData = sdCard->sizeData(0, data->adc1Vers, 0);
-		for(uint16_t i = 0; i<nbData/2000; i++){
-			sdCard->loadData(0, 2000*i, 2000);
-			divMidMinMax(0, 1, 100, (uint16_t*)sdCard->rtext);
-		}
-		sdCard->sync(1);
-		nbData = sdCard->sizeData(1, data->adc1Vers, 1);
-		for(uint16_t i = 0; i<nbData/2000; i++){
-			sdCard->loadData(1, 2000*i, 2000);
-			divMidMinMax(0, 2, 100, (uint16_t*)sdCard->rtext);
-		}
+	if((sdCard->lifeData(0, data->adc1Vers, 0)==FR_OK) || (sdCard->lifeData(1, data->adc3Vers, 0)==FR_OK)){
+		if(data->numAdcCH [0]){
+			sdCard->sync(0);
+			nbData = sdCard->sizeData(0, data->adc1Vers, 0);
+			for(uint16_t i = 0; i<nbData/4000; i++){
+				sdCard->loadData(0, 4000*i, 4000);
+				divMidMinMax(0, 1, (uint16_t*)sdCard->rtext);
+			}
+			sdCard->sync(1);
+			nbData = sdCard->sizeData(0, data->adc1Vers, 1);
+			for(uint16_t i = 0; i<nbData/4000; i++){
+				sdCard->loadData(1, 4000*i, 4000);
+				divMidMinMax(0, 2, (uint16_t*)sdCard->rtext);
+			}
 
-	}
-	if(data->numAdcCH [1]){
-		sdCard->sync(3);
-		nbData = sdCard->sizeData(1, data->adc3Vers, 0);
-		for(uint16_t i = 0; i<nbData/2000; i++){
-			sdCard->loadData(3, 2000*i, 2000);
-			divMidMinMax(1, 1, 100, (uint16_t*)sdCard->rtext);
 		}
-		sdCard->sync(3);
-		nbData = sdCard->sizeData(4, data->adc3Vers, 1);
-		for(uint16_t i = 0; i<nbData/2000; i++){
-			sdCard->loadData(4, 2000*i, 2000);
-			divMidMinMax(1, 2, 100, (uint16_t*)sdCard->rtext);
+		if(data->numAdcCH [1]){
+			sdCard->sync(3);
+			nbData = sdCard->sizeData(1, data->adc3Vers, 0);
+			for(uint16_t i = 0; i<nbData/4000; i++){
+				sdCard->loadData(1, 4000*i, 4000);
+				divMidMinMax(1, 1, (uint16_t*)sdCard->rtext);
+			}
+			sdCard->sync(3);
+			nbData = sdCard->sizeData(1, data->adc3Vers, 1);
+			for(uint16_t i = 0; i<nbData/4000; i++){
+				sdCard->loadData(4, 4000*i, 4000);
+				divMidMinMax(1, 2, (uint16_t*)sdCard->rtext);
+			}
 		}
+		sdCard->closeData();
+
+		sdCard->openParam();
+		if(data->numAdcCH [0])
+			sdCard->saveParam(9, &data->adc1Vers, 1);
+		if(data->numAdcCH [1])
+			sdCard->saveParam(14, &data->adc3Vers, 1);
+		sdCard->closeParam();
 	}
-	sdCard->closeData();
 }
 
 void Controller::dataRecept()
@@ -728,26 +739,28 @@ void Controller::messageNOK(){
 	CDC_Transmit_FS(TX_buffer, 2);
 }
 
-void Controller::divMidMinMax(uint8_t adc,uint8_t divVer,uint8_t div, uint16_t* val){
+void Controller::divMidMinMax(uint8_t adc,uint8_t divVer, uint16_t* val){
+	uint16_t pos = 0;
 	offset = 3*(data->numAdcCH[adc])-3;
 	for(uint8_t w = 0; w<data->numAdcCH[adc]; w++) {
 		midAdd [w] = 0;
 		for(uint8_t x = 0; x <2*boucle/data->numAdcCH[adc]; x++) {
-			for(uint32_t y = 0; y < div; y++) {
-				if(val[y+w+x] < value[3*w+offset*x])
-					value[3*w+offset*x] = val[y+w+x];
-				if(val[y+x] > value[1+3*w+offset*x])
-					value[1 + 3 * w + offset * x] = val[y+w+x];
-				midAdd [w] += val[y+w+x];
+			for(uint32_t y = 0; y < 100; y++) {
+				if(val[pos] < value[3*w+offset*x])
+					value[3*w+offset*x] = val[pos];
+				if(val[pos] > value[1+3*w+offset*x])
+					value[1 + 3 * w + offset * x] = val[pos];
+				midAdd [w] += val[pos];
+				pos+=2;
 			}
-			value[2+3*w+offset*x] = midAdd[w]/div;
+			value[2+3*w+offset*x] = midAdd[w]/100;
 		}
 	}
-	sdCard->saveData(divVer+3*adc,2*3*boucle,value);
+	sdCard->saveData(1,60, value);
+	sdCard->saveData(divVer+3*adc,2*3*boucle, value);
 }
 
 void Controller::loadNiv(){
-
 
 }
 
