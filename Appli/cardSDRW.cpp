@@ -223,3 +223,18 @@ void cardSDRW::saveParam(uint16_t pos, uint8_t* data, uint16_t size)
 	if(f_write(paramFile,(void*) data, size, &byteswritten) != FR_OK)
 		Error_Handler();
 }
+
+uint16_t cardSDRW::freeSize(){
+	FATFS *fs;
+	uint32_t fre_clust, fre_sect, tot_sect;
+
+	/* Get volume information and free clusters of drive 1 */
+	if(f_getfree("", &fre_clust, &fs) != FR_OK)
+		Error_Handler();
+
+	/* Get total sectors and free sectors */
+	tot_sect = (fs->n_fatent - 2) * fs->csize;
+	fre_sect = fre_clust * fs->csize;
+	uint16_t tot = ((fre_sect)/(tot_sect/100));
+	return tot;
+}

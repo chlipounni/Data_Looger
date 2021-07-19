@@ -2,6 +2,7 @@
 #include "usbd_cdc_if.h"
 
 extern ADC_HandleTypeDef hadc1;
+extern ADC_HandleTypeDef hadc2;
 extern ADC_HandleTypeDef hadc3;
 extern TIM_HandleTypeDef htim2;
 extern TIM_HandleTypeDef htim3;
@@ -761,6 +762,8 @@ void Controller::divMidMinMax(uint8_t adc,uint8_t divVer, uint16_t* val){
 }
 
 void Controller::loadNiv(){
+	data->levelSDcard = sdCard->freeSize();
+	data->levelBatt = 0;
 
 }
 

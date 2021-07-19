@@ -49,7 +49,6 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 		{
 			theController->loadNiv();
 			//view niv SDcard
-			theController->loadNiv();
 			theController->nivSDcard();
 
 		}else if(etat == GPIO_PIN_SET){

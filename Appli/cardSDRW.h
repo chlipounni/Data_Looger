@@ -27,6 +27,7 @@ public:
 	void loadData(uint8_t file,uint32_t pos, uint16_t size);
 	uint32_t sizeData(uint8_t adc, uint8_t vers, uint8_t div);
 	FRESULT lifeData(uint8_t adc, uint8_t vers,uint8_t div);
+	uint16_t freeSize();
 	void sync(uint8_t file);
 	void deleteData();
 	void closeData();
@@ -42,7 +43,6 @@ public:
 	uint16_t sizeParam();
 	void closeParam();
 
-	FRESULT res; /* FatFs function common result code */
 	UINT byteswritten, bytesread; /* File write/read counts */
 	uint8_t rtext[_MAX_SS];/* File read buffer */
 

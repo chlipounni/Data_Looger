@@ -67,6 +67,14 @@ void Error_Handler(void);
 #define AIN2_GPIO_Port GPIOA
 #define AIN3_Pin GPIO_PIN_4
 #define AIN3_GPIO_Port GPIOC
+#define AINBATT_Pin GPIO_PIN_1
+#define AINBATT_GPIO_Port GPIOB
+#define Amp_3_Pin GPIO_PIN_7
+#define Amp_3_GPIO_Port GPIOE
+#define AV_2_Pin GPIO_PIN_9
+#define AV_2_GPIO_Port GPIOE
+#define Amp_2_Pin GPIO_PIN_11
+#define Amp_2_GPIO_Port GPIOE
 #define LED4_Pin GPIO_PIN_12
 #define LED4_GPIO_Port GPIOB
 #define LED5_Pin GPIO_PIN_13
@@ -90,8 +98,6 @@ void Error_Handler(void);
 #define LED2_GPIO_Port GPIOC
 #define SD_DETECT_Pin GPIO_PIN_7
 #define SD_DETECT_GPIO_Port GPIOC
-#define SD_D0_Pin GPIO_PIN_8
-#define SD_D0_GPIO_Port GPIOC
 #define SW1_Pin GPIO_PIN_8
 #define SW1_GPIO_Port GPIOA
 #define SW1_EXTI_IRQn EXTI9_5_IRQn
@@ -103,26 +109,16 @@ void Error_Handler(void);
 #define USB_DN_GPIO_Port GPIOA
 #define USB_DP_Pin GPIO_PIN_12
 #define USB_DP_GPIO_Port GPIOA
-#define SD_CLK_Pin GPIO_PIN_12
-#define SD_CLK_GPIO_Port GPIOC
 #define DEBUG_VCP_RX_Pin GPIO_PIN_0
 #define DEBUG_VCP_RX_GPIO_Port GPIOD
 #define DEBUG_VCP_TX_Pin GPIO_PIN_1
 #define DEBUG_VCP_TX_GPIO_Port GPIOD
-#define SD_CMD_Pin GPIO_PIN_2
-#define SD_CMD_GPIO_Port GPIOD
-#define Amp_0_Pin GPIO_PIN_6
+#define Amp_0_Pin GPIO_PIN_4
 #define Amp_0_GPIO_Port GPIOB
-#define AV_0_Pin GPIO_PIN_8
+#define AV_0_Pin GPIO_PIN_6
 #define AV_0_GPIO_Port GPIOB
 #define Amp_1_Pin GPIO_PIN_0
 #define Amp_1_GPIO_Port GPIOE
-#define Amp_3_Pin GPIO_PIN_7
-#define Amp_3_GPIO_Port GPIOE
-#define AV_2_Pin GPIO_PIN_9
-#define AV_2_GPIO_Port GPIOE
-#define Amp_2_Pin GPIO_PIN_11
-#define Amp_2_GPIO_Port GPIOE
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
