@@ -2,7 +2,7 @@
  * cardSDRW.cpp
  */
 
-#include "cardSDRW.h"
+#include "../Inc/cardSDRW.h"
 
 cardSDRW::cardSDRW(appData* pointData)
 {
@@ -190,6 +190,7 @@ void cardSDRW::closeDataFile(){
 
 void cardSDRW::openParam()
 {
+
 	if( f_open(paramFile, "param.par", FA_OPEN_ALWAYS | FA_WRITE | FA_READ) != FR_OK)
 		Error_Handler();
 }

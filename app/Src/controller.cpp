@@ -1,4 +1,4 @@
-#include "controller.h"
+#include "../Inc/controller.h"
 #include "usbd_cdc_if.h"
 
 extern ADC_HandleTypeDef hadc1;
@@ -761,16 +761,25 @@ void Controller::divMidMinMax(uint8_t adc,uint8_t divVer, uint16_t* val){
 	sdCard->saveData(divVer+3*adc,2*3*boucle, value);
 }
 
-void Controller::loadNiv(){
-	data->levelSDcard = sdCard->freeSize();
-	data->levelBatt = 0;
-
-}
-
 void Controller::nivSDcard(){
-
+	nivLED(100-sdCard->freeSize());
 }
 
 void Controller::nivBatt(){
+	// Get ADC value
+	HAL_ADC_Start(&hadc2);
+	HAL_ADC_PollForConversion(&hadc2, HAL_MAX_DELAY);
+	nivLED(HAL_ADC_GetValue(&hadc2)/655);
+}
 
+void Controller::nivLED(uint8_t value){
+	HAL_GPIO_WritePin(LED4_GPIO_Port, LED4_Pin, GPIO_PIN_RESET);
+	if(value>20)
+		HAL_GPIO_WritePin(GPIOB, LED5_Pin, GPIO_PIN_RESET);
+	if(value>40)
+		HAL_GPIO_WritePin(GPIOB, LED6_Pin, GPIO_PIN_RESET);
+	if(value>60)
+		HAL_GPIO_WritePin(GPIOB, LED7_Pin, GPIO_PIN_RESET);
+	if(value>80)
+		HAL_GPIO_WritePin(GPIOD, LED8_Pin, GPIO_PIN_RESET);
 }

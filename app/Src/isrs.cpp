@@ -1,6 +1,6 @@
 #include "main.h"
 #include "usbd_cdc_if.h"
-#include "Appli/controller.h"
+#include "app/Inc/controller.h"
 
 extern ADC_HandleTypeDef hadc1;
 extern ADC_HandleTypeDef hadc3;
@@ -41,19 +41,30 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef * hadc)
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
+	static uint8_t toggle = 0;
 	GPIO_PinState etat;
 	if(GPIO_Pin == BP_Pin)
 	{
 		etat = HAL_GPIO_ReadPin(BP_GPIO_Port, BP_Pin);
-		if(etat == GPIO_PIN_RESET)
+		if(etat == GPIO_PIN_SET)
 		{
-			theController->loadNiv();
-			//view niv SDcard
-			theController->nivSDcard();
+			if(toggle){
+				toggle = 0;
+				HAL_GPIO_WritePin(LED3_GPIO_Port, LED3_Pin, GPIO_PIN_RESET);
+				//view niv SDcard
+				theController->nivSDcard();
+			}else{
+				toggle = 1;
+				//view niv batt
+				theController->nivBatt();
+			}
+		}else if(etat == GPIO_PIN_RESET){
+			//led off
+			HAL_GPIO_WritePin(LED3_GPIO_Port, LED3_Pin, GPIO_PIN_SET);
 
-		}else if(etat == GPIO_PIN_SET){
-			//view niv batt
-			theController->nivBatt();
+			HAL_GPIO_WritePin(LED4_GPIO_Port, LED4_Pin, GPIO_PIN_SET);
+			HAL_GPIO_WritePin(GPIOB, LED5_Pin|LED6_Pin|LED7_Pin, GPIO_PIN_SET);
+			HAL_GPIO_WritePin(GPIOD, LED8_Pin, GPIO_PIN_SET);
 		}
 
 	}else if(GPIO_Pin == SW1_Pin){

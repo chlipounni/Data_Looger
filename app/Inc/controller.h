@@ -29,7 +29,6 @@ public:
 	void stopData();
 
 	//niv
-	void loadNiv();
 	void nivSDcard();
 	void nivBatt();
 
@@ -63,6 +62,7 @@ private:
 	void messageOK();
 	void messageNOK();
 
+	void nivLED(uint8_t value);
 };
 
 #endif /* CONTROLLER_H_ */

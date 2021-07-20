@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>9</zoom_level>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>135</x>
+      <y>108</y>
+      <w>990</w>
+      <h>675</h>
+    </coordinates>
+    <panel_attributes>Appli
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>153</x>
+      <y>144</y>
+      <w>189</w>
+      <h>261</h>
+    </coordinates>
+    <panel_attributes>object: AppData
+bg=light_gray
+--
+	uint8_t numAdcCH [2]
+	uint8_t adc1Vers
+	uint8_t adc3Vers
+
+	uint32_t tm1Prescale
+	uint8_t tm1Div
+	uint16_t tm2Prescale
+	uint8_t tm2Div
+
+	uint8_t AV0
+	uint8_t Amp0
+	uint8_t Amp1
+
+	uint8_t AV2
+	uint8_t Amp2
+	uint8_t Amp3</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>360</x>
+      <y>144</y>
+      <w>324</w>
+      <h>423</h>
+    </coordinates>
+    <panel_attributes>_object: CardSDRW_
+bg=light_gray
+--
+//data
+	void openData();
+	void saveData(uint8_t file, uint16_t size, uint16_t* data);
+	void loadData(uint8_t file,uint32_t pos, uint16_t size);
+	uint32_t sizeData(uint8_t adc, uint8_t vers, uint8_t div);
+	FRESULT lifeData(uint8_t adc, uint8_t vers,uint8_t div);
+	uint16_t freeSize();
+	void sync(uint8_t file);
+	void deleteData();
+	void closeData();
+
+	void openDataFile(uint8_t adc, uint8_t vers, uint8_t div);
+	void closeDataFile();
+	void loadDataFile(uint32_t pos, uint16_t size);
+
+	//param
+	void openParam();
+	void saveParam(uint16_t pos, uint8_t* data, uint16_t size);
+	void loadParam(uint16_t pos, uint16_t size);
+	uint16_t sizeParam();
+	void closeParam();
+--
+	UINT byteswritten, bytesread; /* File write/read counts */
+	uint8_t rtext[_MAX_SS];/* File read buffer */
+	//param
+	FIL* paramFile;
+	//data_Value (0-5) tempFile (6)
+	FIL* SDFile[7];
+	appData* data;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>702</x>
+      <y>144</y>
+      <w>405</w>
+      <h>621</h>
+    </coordinates>
+    <panel_attributes>_object: Class_
+bg=light_gray
+--
+_public:_
+	Controller(Controller &amp;other) = delete;
+	void operator=(const Controller &amp;) = delete;
+	static Controller* GetInstance();
+	void init();
+	
+	//reception
+	void dataRecept();
+	
+	// Data
+	void saveData(uint8_t adc,uint8_t full);
+	void startData();
+	void stopData();
+	
+	//niv
+	void nivSDcard();
+	void nivBatt();
+	
+	uint8_t RX_buffer [10];
+	uint8_t TX_buffer [10];
+	uint16_t adc1Buffer[ADC_BUFFER_SIZE] __attribute__ ((aligned (8)));
+	uint16_t adc3Buffer[ADC_BUFFER_SIZE] __attribute__ ((aligned (8)));
+
+_protected:_
+	static Controller* controller_;
+	Controller();
+
+_private:_
+	void loadParam();
+	void appliParam();
+	void saveAllParam();
+	void saveParam(uint16_t pos, uint8_t* data);
+	cardSDRW* sdCard;
+	appData* data;
+	uint16_t value[60];
+	uint32_t midAdd [2] ={0,0};
+	uint8_t offset;
+	void divMidMinMax(uint8_t adc,uint8_t divVer, uint16_t* val);
+	void messageOK();
+	void messageNOK();
+	void nivLED(uint8_t value);</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>

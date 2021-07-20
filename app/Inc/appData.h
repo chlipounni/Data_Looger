@@ -32,11 +32,6 @@ public:
 	uint8_t AV2 = 1;
 	uint8_t Amp2 = 0;
 	uint8_t Amp3 = 0;
-
-	//data note save
-	uint16_t levelBatt;
-	uint16_t levelSDcard;
-
 };
 
 #endif /* APPDATA_H_ */

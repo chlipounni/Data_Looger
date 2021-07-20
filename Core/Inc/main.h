@@ -33,7 +33,6 @@ extern "C" {
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
-
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
@@ -90,10 +89,8 @@ void Error_Handler(void);
 #define BP_Pin GPIO_PIN_10
 #define BP_GPIO_Port GPIOD
 #define BP_EXTI_IRQn EXTI15_10_IRQn
-#define test1_Pin GPIO_PIN_12
-#define test1_GPIO_Port GPIOD
-#define test2_Pin GPIO_PIN_14
-#define test2_GPIO_Port GPIOD
+#define LED3_Pin GPIO_PIN_11
+#define LED3_GPIO_Port GPIOD
 #define LED2_Pin GPIO_PIN_6
 #define LED2_GPIO_Port GPIOC
 #define SD_DETECT_Pin GPIO_PIN_7

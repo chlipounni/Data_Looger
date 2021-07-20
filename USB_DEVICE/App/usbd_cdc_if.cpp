@@ -23,7 +23,7 @@
 #include "usbd_cdc_if.h"
 
 /* USER CODE BEGIN INCLUDE */
-#include "Appli/Controller.h"
+#include "app/Inc/Controller.h"
 /* USER CODE END INCLUDE */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -192,7 +192,7 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t* pbuf, uint16_t length)
 
 		break;
 
-	case CDC_SET_COMM_FEATURE:
+    case CDC_SET_COMM_FEATURE:
 
 		break;
 
@@ -222,11 +222,11 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t* pbuf, uint16_t length)
 		/* 6      | bDataBits  |   1   | Number Data bits (5, 6, 7, 8 or 16).          */
 		/*******************************************************************************/
 	case CDC_SET_LINE_CODING:
-		memcpy(controller->RX_buffer, pbuf, sizeof(controller->RX_buffer));
+		//memcpy(controller->RX_buffer, pbuf, sizeof(controller->RX_buffer));
 		break;
 
 	case CDC_GET_LINE_CODING:
-		memcpy(pbuf, controller->RX_buffer, sizeof(controller->RX_buffer));
+		//memcpy(pbuf, controller->RX_buffer, sizeof(controller->RX_buffer));
 		break;
 
 	case CDC_SET_CONTROL_LINE_STATE:
