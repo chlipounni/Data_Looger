@@ -1,10 +1,6 @@
 #include "main.h"
 #include "usbd_cdc_if.h"
-<<<<<<< HEAD:Appli/Src/isrs.cpp
 #include "Appli/Inc/controller.h"
-=======
-#include "app/Inc/controller.h"
->>>>>>> 68f92784134064e32d7ff9a30d487dc831eed5f2:app/Src/isrs.cpp
 
 extern ADC_HandleTypeDef hadc1;
 extern ADC_HandleTypeDef hadc3;
@@ -49,10 +45,7 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef * hadc)
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
-<<<<<<< HEAD:Appli/Src/isrs.cpp
 
-=======
->>>>>>> 68f92784134064e32d7ff9a30d487dc831eed5f2:app/Src/isrs.cpp
 	static uint8_t toggle = 0;
 	GPIO_PinState etat;
 	if(GPIO_Pin == BP_Pin)
@@ -71,10 +64,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 				//view niv batt
 				theController->nivBatt();
 			}
-<<<<<<< HEAD:Appli/Src/isrs.cpp
 			__enable_irq();
-=======
->>>>>>> 68f92784134064e32d7ff9a30d487dc831eed5f2:app/Src/isrs.cpp
 		}else if(etat == GPIO_PIN_RESET){
 			//led off
 			HAL_GPIO_WritePin(LED3_GPIO_Port, LED3_Pin, GPIO_PIN_SET);

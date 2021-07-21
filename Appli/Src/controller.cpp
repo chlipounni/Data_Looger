@@ -742,30 +742,6 @@ void Controller::messageNOK(){
 	CDC_Transmit_FS(TX_buffer, 2);
 }
 
-<<<<<<< HEAD:Appli/Src/controller.cpp
-=======
-void Controller::divMidMinMax(uint8_t adc,uint8_t divVer, uint16_t* val){
-	uint16_t pos = 0;
-	offset = 3*(data->numAdcCH[adc])-3;
-	for(uint8_t w = 0; w<data->numAdcCH[adc]; w++) {
-		midAdd [w] = 0;
-		for(uint8_t x = 0; x <2*boucle/data->numAdcCH[adc]; x++) {
-			for(uint32_t y = 0; y < 100; y++) {
-				if(val[pos] < value[3*w+offset*x])
-					value[3*w+offset*x] = val[pos];
-				if(val[pos] > value[1+3*w+offset*x])
-					value[1 + 3 * w + offset * x] = val[pos];
-				midAdd [w] += val[pos];
-				pos+=2;
-			}
-			value[2+3*w+offset*x] = midAdd[w]/100;
-		}
-	}
-	sdCard->saveData(1,60, value);
-	sdCard->saveData(divVer+3*adc,2*3*boucle, value);
-}
-
->>>>>>> 68f92784134064e32d7ff9a30d487dc831eed5f2:app/Src/controller.cpp
 void Controller::nivSDcard(){
 	nivLED(100-sdCard->freeSize());
 }

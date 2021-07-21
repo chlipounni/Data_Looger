@@ -11,6 +11,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include "fatfs.h"
+#include <vector>
 #include "appData.h"
 
 #define nbDiv 3
