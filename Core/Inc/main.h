@@ -91,6 +91,13 @@ void Error_Handler(void);
 #define BP_EXTI_IRQn EXTI15_10_IRQn
 #define LED3_Pin GPIO_PIN_11
 #define LED3_GPIO_Port GPIOD
+<<<<<<< HEAD
+#define test1_Pin GPIO_PIN_12
+#define test1_GPIO_Port GPIOD
+#define test2_Pin GPIO_PIN_14
+#define test2_GPIO_Port GPIOD
+=======
+>>>>>>> 68f92784134064e32d7ff9a30d487dc831eed5f2
 #define LED2_Pin GPIO_PIN_6
 #define LED2_GPIO_Port GPIOC
 #define SD_DETECT_Pin GPIO_PIN_7

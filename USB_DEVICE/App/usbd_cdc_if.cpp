@@ -23,7 +23,11 @@
 #include "usbd_cdc_if.h"
 
 /* USER CODE BEGIN INCLUDE */
+<<<<<<< HEAD
+#include "Appli/Inc/Controller.h"
+=======
 #include "app/Inc/Controller.h"
+>>>>>>> 68f92784134064e32d7ff9a30d487dc831eed5f2
 /* USER CODE END INCLUDE */
 
 /* Private typedef -----------------------------------------------------------*/

@@ -90,7 +90,7 @@ VP_TIM2_VS_no_output2.Signal=TIM2_VS_no_output2
 SH.ADCx_INP4.ConfNb=1
 RCC.MCO2PinFreq_Value=96000000
 Mcu.Package=LQFP100
-TIM2.Prescaler=0
+TIM2.Prescaler=63615
 TIM2.OCMode_2=TIM_OCMODE_TOGGLE
 PB1.Signal=ADCx_INP5
 PD11.Locked=true
@@ -135,7 +135,11 @@ ProjectManager.ProjectFileName=DataLogger.ioc
 RCC.DIVQ1=4
 ADC3.OffsetNumber-1\#ChannelRegularConversion=ADC_OFFSET_NONE
 PD9.GPIO_Label=CHGspd
+<<<<<<< HEAD
+Mcu.PinsNb=50
+=======
 Mcu.PinsNb=48
+>>>>>>> 68f92784134064e32d7ff9a30d487dc831eed5f2
 Dma.UART4_TX.1.SyncPolarity=HAL_DMAMUX_SYNC_NO_EVENT
 TIM3.AutoReloadPreload=TIM_AUTORELOAD_PRELOAD_ENABLE
 ADC1.IPParameters=Rank-1\#ChannelRegularConversion,Channel-1\#ChannelRegularConversion,SamplingTime-1\#ChannelRegularConversion,OffsetNumber-1\#ChannelRegularConversion,OffsetSignedSaturation-1\#ChannelRegularConversion,NbrOfConversionFlag,Rank-2\#ChannelRegularConversion,Channel-2\#ChannelRegularConversion,SamplingTime-2\#ChannelRegularConversion,OffsetNumber-2\#ChannelRegularConversion,OffsetSignedSaturation-2\#ChannelRegularConversion,NbrOfConversion,ExternalTrigConv,ExternalTrigConvEdge,EOCSelection,ConversionDataManagement,DiscontinuousConvMode,master
@@ -178,13 +182,30 @@ Dma.ADC1.2.RequestParameters=Instance,Direction,PeriphInc,MemInc,PeriphDataAlign
 ADC3.NbrOfConversion=2
 Dma.UART4_RX.0.PeriphInc=DMA_PINC_DISABLE
 PE9.GPIO_Label=AV_2
+<<<<<<< HEAD
+Mcu.Pin48=VP_TIM3_VS_no_output4
+Mcu.Pin49=VP_USB_DEVICE_VS_USB_DEVICE_CDC_FS
+Mcu.Pin46=VP_TIM2_VS_no_output2
+Mcu.Pin47=VP_TIM3_VS_ClockSourceINT
+=======
 Mcu.Pin46=VP_TIM3_VS_no_output4
 Mcu.Pin47=VP_USB_DEVICE_VS_USB_DEVICE_CDC_FS
+>>>>>>> 68f92784134064e32d7ff9a30d487dc831eed5f2
 Dma.ADC3.3.Direction=DMA_PERIPH_TO_MEMORY
 SH.ADCx_INP5.ConfNb=1
 PC6.PinState=GPIO_PIN_RESET
 PB14.Signal=GPIO_Output
 FATFS.BSP.number=1
+<<<<<<< HEAD
+Mcu.Pin40=PB6
+Mcu.Pin41=PB8
+PC12.Mode=SD_1_bit_auto_dir_voltage_converter
+Mcu.Pin44=VP_SYS_VS_Systick
+Mcu.Pin45=VP_TIM2_VS_ClockSourceINT
+Mcu.Pin42=PE0
+Dma.UART4_RX.0.SyncSignalID=NONE
+Mcu.Pin43=VP_FATFS_VS_SDIO
+=======
 Mcu.Pin40=PE0
 Mcu.Pin41=VP_FATFS_VS_SDIO
 PC12.Mode=SD_1_bit_auto_dir_voltage_converter
@@ -193,6 +214,7 @@ Mcu.Pin45=VP_TIM3_VS_ClockSourceINT
 Mcu.Pin42=VP_SYS_VS_Systick
 Dma.UART4_RX.0.SyncSignalID=NONE
 Mcu.Pin43=VP_TIM2_VS_ClockSourceINT
+>>>>>>> 68f92784134064e32d7ff9a30d487dc831eed5f2
 ProjectManager.LastFirmware=true
 Dma.UART4_RX.0.FIFOMode=DMA_FIFOMODE_DISABLE
 PD1.Mode=Asynchronous
@@ -202,6 +224,25 @@ Dma.UART4_RX.0.SyncPolarity=HAL_DMAMUX_SYNC_NO_EVENT
 PC2_C.GPIO_Label=AIN0
 RCC.AHB12Freq_Value=48000000
 PB13.PinState=GPIO_PIN_RESET
+<<<<<<< HEAD
+Mcu.Pin37=PD2
+Mcu.Pin38=PB3 (JTDO/TRACESWO)
+Mcu.Pin35=PD0
+PB15.GPIO_Label=LED7
+Mcu.Pin36=PD1
+TIM3.OCMode_4=TIM_OCMODE_TOGGLE
+Dma.ADC3.3.RequestParameters=Instance,Direction,PeriphInc,MemInc,PeriphDataAlignment,MemDataAlignment,Mode,Priority,FIFOMode,SignalID,Polarity,RequestNumber,SyncSignalID,SyncPolarity,SyncEnable,EventEnable,SyncRequestNumber
+Mcu.Pin39=PB4 (NJTRST)
+FATFS0.BSP.i2creg=
+RCC.RNGFreq_Value=48000000
+Mcu.Pin30=PA12
+Dma.ADC1.2.RequestNumber=1
+Mcu.Pin33=PA15 (JTDI)
+TIM3.IPParameters=AutoReloadPreload,Prescaler,Channel-Output Compare4 No Output,OCMode_4,Period
+Mcu.Pin34=PC12
+Mcu.Pin31=PA13 (JTMS/SWDIO)
+Mcu.Pin32=PA14 (JTCK/SWCLK)
+=======
 Mcu.Pin37=PB4 (NJTRST)
 Mcu.Pin38=PB6
 Mcu.Pin35=PD2
@@ -219,14 +260,30 @@ TIM3.IPParameters=AutoReloadPreload,Prescaler,Channel-Output Compare4 No Output,
 Mcu.Pin34=PD1
 Mcu.Pin31=PA15 (JTDI)
 Mcu.Pin32=PC12
+>>>>>>> 68f92784134064e32d7ff9a30d487dc831eed5f2
 NVIC.NonMaskableInt_IRQn=true\:0\:0\:false\:false\:true\:false\:false
-TIM2.Period=480000
+TIM2.Period=65535
 PE7.Locked=true
 VP_TIM2_VS_no_output2.Mode=Output Compare2 No Output
 Dma.UART4_TX.1.SyncSignalID=NONE
 ProjectManager.FreePins=false
 RCC.LPTIM2Freq_Value=48000000
 ADC3.Channel-1\#ChannelRegularConversion=ADC_CHANNEL_0
+<<<<<<< HEAD
+Mcu.Pin26=PA8
+Dma.ADC1.2.SyncEnable=DISABLE
+Mcu.Pin27=PA9
+ADC2.OffsetSignedSaturation-2\#ChannelRegularConversion=DISABLE
+Mcu.Pin24=PC7
+Dma.ADC1.2.Instance=DMA1_Stream0
+ProjectManager.UnderRoot=true
+Mcu.Pin25=PC8
+ADC1.ExternalTrigConv=ADC_EXTERNALTRIG_T2_CC2
+Mcu.Pin28=PA10
+PC7.GPIO_Label=SD_DETECT
+PC8.Mode=SD_1_bit_auto_dir_voltage_converter
+Mcu.Pin29=PA11
+=======
 Mcu.Pin26=PA10
 Dma.ADC1.2.SyncEnable=DISABLE
 Mcu.Pin27=PA11
@@ -240,13 +297,22 @@ Mcu.Pin28=PA12
 PC7.GPIO_Label=SD_DETECT
 PC8.Mode=SD_1_bit_auto_dir_voltage_converter
 Mcu.Pin29=PA13 (JTMS/SWDIO)
+>>>>>>> 68f92784134064e32d7ff9a30d487dc831eed5f2
 ADC3.Rank-1\#ChannelRegularConversion=1
 ADC1.SamplingTime-1\#ChannelRegularConversion=ADC_SAMPLETIME_2CYCLES_5
+<<<<<<< HEAD
+Mcu.Pin22=PD14
+Mcu.Pin23=PC6
+Mcu.Pin20=PD11
+ADC1.master=1
+Mcu.Pin21=PD12
+=======
 Mcu.Pin22=PC7
 Mcu.Pin23=PC8
 Mcu.Pin20=PD11
 ADC1.master=1
 Mcu.Pin21=PC6
+>>>>>>> 68f92784134064e32d7ff9a30d487dc831eed5f2
 PD10.Locked=true
 ADC2.NbrOfConversionFlag=1
 PA10.Locked=true
@@ -346,7 +412,7 @@ PD11.GPIO_Label=LED3
 RCC.HCLKFreq_Value=48000000
 Mcu.IPNb=17
 ProjectManager.PreviousToolchain=STM32CubeIDE
-TIM3.Period=4800
+TIM3.Period=65535
 RCC.SPDIFRXFreq_Value=48000000
 PB13.GPIO_ModeDefaultOutputPP=GPIO_MODE_OUTPUT_OD
 FATFS._MULTI_PARTITION=0
@@ -392,7 +458,7 @@ Mcu.IP13=TIM3
 Mcu.IP16=USB_OTG_FS
 Mcu.IP15=USB_DEVICE
 Dma.ADC3.3.Mode=DMA_CIRCULAR
-TIM3.Prescaler=0
+TIM3.Prescaler=53535
 File.Version=6
 PA10.GPIO_Label=LED1
 TIM3.Channel-Output\ Compare4\ No\ Output=TIM_CHANNEL_4
@@ -547,8 +613,8 @@ RCC.APB1Freq_Value=24000000
 PD8.PinState=GPIO_PIN_RESET
 ADC3.NbrOfConversionFlag=1
 ProjectManager.DeviceId=STM32H743VGTx
-Dma.ADC3.3.SignalID=NONE
 PB12.Signal=GPIO_Output
+Dma.ADC3.3.SignalID=NONE
 ProjectManager.LibraryCopy=1
 PB1.GPIOParameters=GPIO_Label
 PB4\ (NJTRST).Signal=GPIO_Output
