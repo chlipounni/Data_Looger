@@ -20,9 +20,9 @@ public:
 	uint8_t adc1Vers = 0;
 	uint8_t adc3Vers = 0;
 
-	uint32_t tm1Prescale = 3840;
+	uint32_t tm1Prescale = 1920;
 	uint8_t tm1Div = 0;
-	uint16_t tm2Prescale = 3840;
+	uint16_t tm2Prescale = 2880;
 	uint8_t tm2Div = 0;
 
 	uint8_t AV0 = 1;

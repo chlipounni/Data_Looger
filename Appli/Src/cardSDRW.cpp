@@ -29,19 +29,19 @@ void cardSDRW::openData()
 		sprintf(text,"0_%d_div0.smp",data->adc1Vers);
 		if( f_open(SDFile[0], text, FA_CREATE_ALWAYS | FA_WRITE | FA_READ ) != FR_OK)
 			Error_Handler();
-		if(f_write(SDFile[0],(uint8_t*) data->numAdcCH[0], 1, &byteswritten) != FR_OK)
+		if(f_write(SDFile[0],(uint8_t*) data->numAdcCH[0], 2, &byteswritten) != FR_OK)
 			Error_Handler();
 
 		sprintf(text,"0_%d_div1.smp",data->adc1Vers);
 		if( f_open(SDFile[1], text, FA_CREATE_ALWAYS | FA_WRITE | FA_READ ) != FR_OK)
 			Error_Handler();
-		if(f_write(SDFile[1],(uint8_t*) data->numAdcCH[0], 1, &byteswritten) != FR_OK)
+		if(f_write(SDFile[1],(uint8_t*) data->numAdcCH[0], 2, &byteswritten) != FR_OK)
 			Error_Handler();
 
 		sprintf(text,"0_%d_div2.smp",data->adc1Vers);
 		if( f_open(SDFile[2], text, FA_CREATE_ALWAYS | FA_WRITE ) != FR_OK)
 			Error_Handler();
-		if(f_write(SDFile[2],(uint8_t*) data->numAdcCH[0], 1, &byteswritten) != FR_OK)
+		if(f_write(SDFile[2],(uint8_t*) data->numAdcCH[0], 2, &byteswritten) != FR_OK)
 			Error_Handler();
 	}
 
@@ -50,19 +50,19 @@ void cardSDRW::openData()
 		sprintf(text,"1_%d_div0.smp",data->adc3Vers);
 		if( f_open(SDFile[3], text, FA_CREATE_ALWAYS |  FA_WRITE |  FA_READ) != FR_OK)
 			Error_Handler();
-		if(f_write(SDFile[3],(uint8_t*) data->numAdcCH[1], 1, &byteswritten) != FR_OK)
+		if(f_write(SDFile[3],(uint8_t*) data->numAdcCH[1], 2, &byteswritten) != FR_OK)
 			Error_Handler();
 
 		sprintf(text,"1_%d_div1.smp",data->adc3Vers);
 		if( f_open(SDFile[4], text, FA_CREATE_ALWAYS |  FA_WRITE | FA_READ) != FR_OK)
 			Error_Handler();
-		if(f_write(SDFile[4],(uint8_t*) data->numAdcCH[1], 1, &byteswritten) != FR_OK)
+		if(f_write(SDFile[4],(uint8_t*) data->numAdcCH[1], 2, &byteswritten) != FR_OK)
 			Error_Handler();
 
 		sprintf(text,"1_%d_div2.smp",data->adc3Vers);
 		if( f_open(SDFile[5], text, FA_CREATE_ALWAYS |  FA_WRITE) != FR_OK)
 			Error_Handler();
-		if(f_write(SDFile[5],(uint8_t*) data->numAdcCH[1], 1, &byteswritten) != FR_OK)
+		if(f_write(SDFile[5],(uint8_t*) data->numAdcCH[1], 2, &byteswritten) != FR_OK)
 			Error_Handler();
 	}
 }

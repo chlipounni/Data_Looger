@@ -301,10 +301,22 @@ void Controller::dataRecept()
 				data->tm1Prescale += (uint32_t)RX_buffer[5-i]<<(8*i);
 			}
 			data->tm1Div =  RX_buffer[6];
+
+			sdCard->openParam();
+			sdCard->saveParam(0, (uint8_t*) &data->tm1Prescale,4);
+			sdCard->saveParam(4, &data->tm1Div,1);
+			sdCard->closeParam();
+
 			messageOK();
 		} else if(RX_buffer[1] == 1){
 			data->tm2Prescale = RX_buffer[2] + (RX_buffer[3]<<8);
 			data->tm2Div =  RX_buffer[6];
+
+			sdCard->openParam();
+			sdCard->saveParam(5, (uint8_t*) &data->tm2Prescale,2);
+			sdCard->saveParam(7, &data->tm2Div,1);
+			sdCard->closeParam();
+
 			messageOK();
 		}else{
 			messageNOK();
@@ -314,9 +326,19 @@ void Controller::dataRecept()
 	case 0x02://nb CH use
 		if(RX_buffer[1] == 0){
 			data->numAdcCH[0] = RX_buffer[2];
+
+			sdCard->openParam();
+			sdCard->saveParam(8, &data->numAdcCH[0],1);
+			sdCard->closeParam();
+
 			messageOK();
 		} else if(RX_buffer[1] == 1){
 			data->numAdcCH[1] = RX_buffer[2];
+
+			sdCard->openParam();
+			sdCard->saveParam(13, &data->numAdcCH[1],1);
+			sdCard->closeParam();
+
 			messageOK();
 		}else{
 			messageNOK();
@@ -328,9 +350,18 @@ void Controller::dataRecept()
 			if(RX_buffer[2] == 0){
 				data->AV0=RX_buffer[3];
 				data->Amp0=RX_buffer[4];
+
+				sdCard->openParam();
+				sdCard->saveParam(10, &data->AV0,1);
+				sdCard->saveParam(11, &data->Amp0,1);
+				sdCard->closeParam();
+
 				messageOK();
 			}else if(RX_buffer[2]==1){
 				data->Amp1=RX_buffer[4];
+				sdCard->openParam();
+				sdCard->saveParam(12, &data->Amp1,1);
+				sdCard->closeParam();
 				messageOK();
 			}else{
 				messageNOK();
@@ -339,9 +370,20 @@ void Controller::dataRecept()
 			if(RX_buffer[2] == 0){
 				data->AV2=RX_buffer[3];
 				data->Amp2=RX_buffer[4];
+
+				sdCard->openParam();
+				sdCard->saveParam(15, &data->AV2,1);
+				sdCard->saveParam(16, &data->Amp2,1);
+				sdCard->closeParam();
+
 				messageOK();
 			}else if(RX_buffer[2]==1){
 				data->Amp3=RX_buffer[4];
+
+				sdCard->openParam();
+				sdCard->saveParam(17, &data->Amp3,1);
+				sdCard->closeParam();
+
 				messageOK();
 			}else{
 				messageNOK();
@@ -655,6 +697,12 @@ void Controller::dataRecept()
 		sdCard->deleteData();
 		data->adc1Vers = 0;
 		data->adc3Vers = 0;
+
+		sdCard->openParam();
+		sdCard->saveParam(9, &data->adc1Vers,1);
+		sdCard->saveParam(14, &data->adc3Vers,1);
+		sdCard->closeParam();
+
 		messageOK();
 		break;
 	case 0x09://ret ndData

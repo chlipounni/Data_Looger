@@ -50,10 +50,10 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 	GPIO_PinState etat;
 	if(GPIO_Pin == BP_Pin)
 	{
-		__disable_irq();
 		etat = HAL_GPIO_ReadPin(BP_GPIO_Port, BP_Pin);
 		if(etat == GPIO_PIN_SET)
 		{
+			__disable_irq();
 			if(toggle){
 				toggle = 0;
 				HAL_GPIO_WritePin(LED3_GPIO_Port, LED3_Pin, GPIO_PIN_RESET);
