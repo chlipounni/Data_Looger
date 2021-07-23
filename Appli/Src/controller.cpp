@@ -298,7 +298,7 @@ void Controller::dataRecept()
 		if(RX_buffer[1] == 0){
 			data->tm1Prescale = 0;
 			for(uint8_t i = 0 ; i<4; i++){
-				data->tm1Prescale += (uint32_t)RX_buffer[5-i]<<(8*i);
+				data->tm1Prescale += (uint32_t)RX_buffer[2+i]<<(8*i);
 			}
 			data->tm1Div =  RX_buffer[6];
 
@@ -735,14 +735,14 @@ void Controller::dataRecept()
 		break;
 	case 0x0B://ret prescale TM
 
-		TX_buffer[0] = 0x1A;
+		TX_buffer[0] = 0x1B;
 		TX_buffer[1] = RX_buffer[1];
 		if(RX_buffer[1] == 0){
 			for(uint8_t i = 0 ; i<4; i++){
 				TX_buffer[5-i] = data->tm1Prescale>>(8*i);
 			}
 			TX_buffer[6] = data->tm1Div;
-		}else if(RX_buffer[1] == 0){
+		}else if(RX_buffer[1] == 1){
 			for(uint8_t i = 0 ; i<4; i++){
 				TX_buffer[5-i] = data->tm2Prescale>>(8*i);
 			}
@@ -750,8 +750,8 @@ void Controller::dataRecept()
 		}
 		CDC_Transmit_FS(TX_buffer, 7);
 		break;
-	case 0x0D://ret param CH
-		TX_buffer[0] = 0x1A;
+	case 0x0C://ret param CH
+		TX_buffer[0] = 0x1C;
 		TX_buffer[1] = RX_buffer[1];
 		TX_buffer[2] = RX_buffer[2];
 		if(RX_buffer[1] == 0){
@@ -770,6 +770,14 @@ void Controller::dataRecept()
 			}
 		}
 		CDC_Transmit_FS(TX_buffer, 5);
+		break;
+
+	case 0x0D://ret nb CH
+		TX_buffer[0] = 0x1D;
+		TX_buffer[1] = RX_buffer[1];
+		TX_buffer[2] = data->numAdcCH[RX_buffer[1]];
+
+		CDC_Transmit_FS(TX_buffer, 3);
 		break;
 
 	default:

@@ -33,8 +33,8 @@ public:
 	void nivBatt();
 
 
-	uint8_t RX_buffer [10];
-	uint8_t TX_buffer [10];
+	uint8_t RX_buffer [12];
+	uint8_t TX_buffer [12];
 
 	uint16_t adc1Buffer[ADC_BUFFER_SIZE] __attribute__ ((aligned (8)));
 	uint16_t adc3Buffer[ADC_BUFFER_SIZE] __attribute__ ((aligned (8)));
