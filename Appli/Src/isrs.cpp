@@ -23,7 +23,7 @@ void HAL_ADC_ConvHalfCpltCallback(ADC_HandleTypeDef * hadc)
 	}
 	else if (hadc == &hadc3)
 	{
-		theController->saveData(3,0);
+		theController->saveData(2,0);
 	}
 	__enable_irq();
 }
@@ -38,7 +38,7 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef * hadc)
 	}
 	else if (hadc == &hadc3)
 	{
-		theController->saveData(3,1);
+		theController->saveData(2,1);
 	}
 	__enable_irq();
 }

@@ -14,8 +14,6 @@
 #include <vector>
 #include "appData.h"
 
-#define nbDiv 3
-
 class cardSDRW {
 public:
 	cardSDRW(appData* pointData);
@@ -49,8 +47,8 @@ public:
 	//param
 	FIL* paramFile;
 
-	//data_Value (0-5) tempFile (6)
-	FIL* SDFile[7];
+	//data_Value (0-1) tempFile (2)
+	FIL* SDFile[3];
 
 	appData* data;
 };

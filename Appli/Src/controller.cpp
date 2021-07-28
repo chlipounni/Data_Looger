@@ -243,11 +243,11 @@ void Controller::saveData(uint8_t adc,uint8_t full) {
 			sdCard->saveData(0, ADC_BUFFER_SIZE, &adc1Buffer[ADC_BUFFER_SIZE/2]);
 		}
 
-	}else if(adc == 3) {
+	}else if(adc == 2) {
 		if(full == 0) {
-			sdCard->saveData(3, ADC_BUFFER_SIZE, &adc3Buffer[0]);
+			sdCard->saveData(1, ADC_BUFFER_SIZE, &adc3Buffer[0]);
 		} else {
-			sdCard->saveData(3, ADC_BUFFER_SIZE, &adc3Buffer[ADC_BUFFER_SIZE/2]);
+			sdCard->saveData(1, ADC_BUFFER_SIZE, &adc3Buffer[ADC_BUFFER_SIZE/2]);
 		}
 	}
 }
