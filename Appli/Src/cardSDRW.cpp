@@ -60,17 +60,11 @@ void cardSDRW::sync(uint8_t file){
 		Error_Handler();
 }
 
-void cardSDRW::deleteData(){
+void cardSDRW::deleteData(uint8_t timer, uint8_t vers, uint8_t nbDiv){
 	char text [20];
 	//adc1
-	for(uint8_t i = 0; i<=data->adc1Vers; i++){
-		sprintf(text,"0_%d_div0.smp",i);
-		if( f_unlink (text) != FR_OK)
-			Error_Handler();
-	}
-	//adc3
-	for(uint8_t i = 0; i<=data->adc3Vers; i++){
-		sprintf(text,"1_%d_div0.smp",i);
+	for(uint8_t i = 0; i<=nbDiv; i++){
+		sprintf(text,"%d_%d_div%d.smp",timer,vers,i);
 		if( f_unlink (text) != FR_OK)
 			Error_Handler();
 	}
