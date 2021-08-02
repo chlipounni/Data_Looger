@@ -694,14 +694,15 @@ void Controller::dataRecept()
 		break;
 
 	case 0x08://delete
+		sdCard->openParam();
 
-		sdCard->deleteData(RX_buffer[1], RX_buffer[2], RX_buffer[3]);
+		sdCard->deleteData(data->adc1Vers, data->adc3Vers);
 		data->adc1Vers = 0;
 		data->adc3Vers = 0;
 
-		sdCard->openParam();
-		sdCard->saveParam(9, &data->adc1Vers,0);
-		sdCard->saveParam(14, &data->adc3Vers,0);
+
+		sdCard->saveParam(9, &data->adc1Vers,1);
+		sdCard->saveParam(14, &data->adc3Vers,1);
 		sdCard->closeParam();
 
 		messageOK();
