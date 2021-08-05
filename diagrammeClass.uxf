@@ -4,10 +4,10 @@
   <element>
     <id>UMLPackage</id>
     <coordinates>
-      <x>135</x>
-      <y>108</y>
-      <w>990</w>
-      <h>675</h>
+      <x>0</x>
+      <y>72</y>
+      <w>1017</w>
+      <h>783</h>
     </coordinates>
     <panel_attributes>Appli
 --
@@ -17,44 +17,51 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>153</x>
-      <y>144</y>
+      <x>18</x>
+      <y>108</y>
       <w>189</w>
-      <h>261</h>
+      <h>315</h>
     </coordinates>
     <panel_attributes>object: AppData
 bg=light_gray
 --
-	uint8_t numAdcCH [2]
-	uint8_t adc1Vers
-	uint8_t adc3Vers
+	appData();
+	virtual ~appData();
 
-	uint32_t tm1Prescale
-	uint8_t tm1Div
-	uint16_t tm2Prescale
-	uint8_t tm2Div
+	//dataSave
+	uint8_t numAdcCH [2] = {2,2};
+	uint8_t adc1nbSeries = 0;
+	uint8_t adc3nbSeries = 0;
 
-	uint8_t AV0
-	uint8_t Amp0
-	uint8_t Amp1
+	uint32_t tm1Period = 4800;
+	uint8_t tm1Div = 0;
+	uint16_t tm2Period = 4800;
+	uint8_t tm2Div = 0;
 
-	uint8_t AV2
-	uint8_t Amp2
-	uint8_t Amp3</panel_attributes>
+	uint8_t AV0 = 1;
+	uint8_t Amp0 = 0;
+	uint8_t Amp1 = 0;
+
+	uint8_t AV2 = 1;
+	uint8_t Amp2 = 0;
+	uint8_t Amp3 = 0;</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>360</x>
-      <y>144</y>
-      <w>324</w>
-      <h>423</h>
+      <x>225</x>
+      <y>108</y>
+      <w>342</w>
+      <h>558</h>
     </coordinates>
     <panel_attributes>_object: CardSDRW_
 bg=light_gray
 --
-//data
+	cardSDRW(appData* pointData);
+	virtual ~cardSDRW();
+
+	//data
 	void openData();
 	void saveData(uint8_t file, uint16_t size, uint16_t* data);
 	void loadData(uint8_t file,uint32_t pos, uint16_t size);
@@ -62,7 +69,7 @@ bg=light_gray
 	FRESULT lifeData(uint8_t adc, uint8_t vers,uint8_t div);
 	uint16_t freeSize();
 	void sync(uint8_t file);
-	void deleteData();
+	void deleteData(uint8_t nbVersTM1, uint8_t nbVersTM2);
 	void closeData();
 
 	void openDataFile(uint8_t adc, uint8_t vers, uint8_t div);
@@ -75,25 +82,30 @@ bg=light_gray
 	void loadParam(uint16_t pos, uint16_t size);
 	uint16_t sizeParam();
 	void closeParam();
+
 --
-	UINT byteswritten, bytesread; /* File write/read counts */
-	uint8_t rtext[_MAX_SS];/* File read buffer */
+
+	UINT byteswritten, bytesread;   /* File write/read counts */
+	uint8_t rtext[_MAX_SS];            /* File read buffer */
+	
 	//param
 	FIL* paramFile;
-	//data_Value (0-5) tempFile (6)
-	FIL* SDFile[7];
+
+	//data_Value (0-1) tempFile (2)
+	FIL* SDFile[3];
+
 	appData* data;</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>702</x>
-      <y>144</y>
-      <w>405</w>
-      <h>621</h>
+      <x>585</x>
+      <y>108</y>
+      <w>414</w>
+      <h>729</h>
     </coordinates>
-    <panel_attributes>_object: Class_
+    <panel_attributes>_object: Controller_
 bg=light_gray
 --
 _public:_
@@ -101,42 +113,49 @@ _public:_
 	void operator=(const Controller &amp;) = delete;
 	static Controller* GetInstance();
 	void init();
-	
+
 	//reception
 	void dataRecept();
-	
+
 	// Data
 	void saveData(uint8_t adc,uint8_t full);
 	void startData();
 	void stopData();
-	
+
 	//niv
 	void nivSDcard();
 	void nivBatt();
-	
-	uint8_t RX_buffer [10];
-	uint8_t TX_buffer [10];
-	uint16_t adc1Buffer[ADC_BUFFER_SIZE] __attribute__ ((aligned (8)));
-	uint16_t adc3Buffer[ADC_BUFFER_SIZE] __attribute__ ((aligned (8)));
 
 _protected:_
 	static Controller* controller_;
 	Controller();
 
 _private:_
+	// Param
 	void loadParam();
 	void appliParam();
 	void saveAllParam();
 	void saveParam(uint16_t pos, uint8_t* data);
-	cardSDRW* sdCard;
-	appData* data;
-	uint16_t value[60];
-	uint32_t midAdd [2] ={0,0};
-	uint8_t offset;
+
 	void divMidMinMax(uint8_t adc,uint8_t divVer, uint16_t* val);
 	void messageOK();
 	void messageNOK();
-	void nivLED(uint8_t value);</panel_attributes>
+
+	void nivLED(uint8_t value);
+	
+--
+
+cardSDRW* sdCard;
+	appData* data;
+
+	uint8_t RX_buffer [12];
+	uint8_t TX_buffer [12];
+	uint16_t adc1Buffer[ADC_BUFFER_SIZE] __attribute__ ((aligned (8)));
+	uint16_t adc3Buffer[ADC_BUFFER_SIZE] __attribute__ ((aligned (8)));
+
+	uint16_t value[60];
+	uint32_t midAdd [2] ={0,0};
+	uint8_t offset;</panel_attributes>
     <additional_attributes/>
   </element>
 </diagram>

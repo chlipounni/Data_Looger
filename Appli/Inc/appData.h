@@ -16,13 +16,13 @@ public:
 	virtual ~appData();
 
 	//dataSave
-	uint8_t numAdcCH [2] = {1,1};
-	uint8_t adc1Vers = 0;
-	uint8_t adc3Vers = 0;
+	uint8_t numAdcCH [2] = {2,2};
+	uint8_t adc1nbSeries = 0;
+	uint8_t adc3nbSeries = 0;
 
-	uint32_t tm1Prescale = 4800;
+	uint32_t tm1Period = 4800;
 	uint8_t tm1Div = 0;
-	uint16_t tm2Prescale = 4800;
+	uint16_t tm2Period = 4800;
 	uint8_t tm2Div = 0;
 
 	uint8_t AV0 = 1;

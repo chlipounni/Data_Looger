@@ -26,7 +26,7 @@ void cardSDRW::openData()
 	char text [20];
 	if(data->numAdcCH[0]){
 		//adc1
-		sprintf(text,"0_%d_div0.smp",data->adc1Vers);
+		sprintf(text,"0_%d_div0.smp",data->adc1nbSeries);
 		if( f_open(SDFile[0], text, FA_CREATE_ALWAYS | FA_WRITE | FA_READ ) != FR_OK)
 			Error_Handler();
 		if(f_write(SDFile[0],(uint8_t*) &data->numAdcCH[0], 1, &byteswritten) != FR_OK)
@@ -41,7 +41,7 @@ void cardSDRW::openData()
 
 	if(data->numAdcCH[1]){
 		//adc3
-		sprintf(text,"1_%d_div0.smp",data->adc3Vers);
+		sprintf(text,"1_%d_div0.smp",data->adc3nbSeries);
 		if( f_open(SDFile[1], text, FA_CREATE_ALWAYS |  FA_WRITE |  FA_READ) != FR_OK)
 			Error_Handler();
 		if(f_write(SDFile[1],(uint8_t*) &data->numAdcCH[1], 1, &byteswritten) != FR_OK)
@@ -103,9 +103,9 @@ void cardSDRW::deleteData(uint8_t nbVersTM1, uint8_t nbVersTM2){
 		char text [20];
 
 		if(data->numAdcCH[0]){
-			sprintf(text,"0_%d_div0.smp",data->adc1Vers);
+			sprintf(text,"0_%d_div0.smp",data->adc1nbSeries);
 			if(f_stat (text, &fno) == FR_OK){
-				data->adc1Vers++;
+				data->adc1nbSeries++;
 				//adc1
 				if( f_close(SDFile[0]) != FR_OK)
 					Error_Handler();
@@ -114,9 +114,9 @@ void cardSDRW::deleteData(uint8_t nbVersTM1, uint8_t nbVersTM2){
 
 		if(data->numAdcCH[1]){
 			//adc3
-			sprintf(text,"1_%d_div0.smp",data->adc3Vers);
+			sprintf(text,"1_%d_div0.smp",data->adc3nbSeries);
 			if(f_stat (text, &fno) == FR_OK){
-				data->adc3Vers++;
+				data->adc3nbSeries++;
 				if( f_close(SDFile[1]) != FR_OK)
 					Error_Handler();
 			}

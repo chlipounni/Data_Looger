@@ -32,7 +32,6 @@ public:
 	void nivSDcard();
 	void nivBatt();
 
-
 	uint8_t RX_buffer [12];
 	uint8_t TX_buffer [12];
 
