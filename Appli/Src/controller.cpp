@@ -36,14 +36,14 @@ void Controller::loadParam()
 		sdCard->loadParam( 0, 18);
 		data->tm1Period = 0;
 		for(uint8_t i = 0 ; i<4; i++){
-			data->tm1Div += (uint32_t)sdCard->rtext[0+i]<<(8*i);
+			data->tm1Period += (uint32_t)sdCard->rtext[0+i]<<(8*i);
 		}
-		data->adc1nbSeries = sdCard->rtext[4];
+		data->tm2Div = sdCard->rtext[4];
 		data->tm2Period = 0;
 		for(uint8_t i = 0 ; i<2; i++){
 			data->tm2Period += (uint16_t)sdCard->rtext[5+i]<<(8*i);
 		}
-		data->adc3Div = sdCard->rtext[7];
+		data->tm2Div = sdCard->rtext[7];
 
 		//ADC1
 		data->numAdcCH[0] = sdCard->rtext[8];
