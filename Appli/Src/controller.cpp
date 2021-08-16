@@ -34,26 +34,26 @@ void Controller::loadParam()
 	if(sdCard->sizeParam() == 18){
 		sdCard->openParam();
 		sdCard->loadParam( 0, 18);
-		data->tm1Period = 0;
+		data->adcAPeriod = 0;
 		for(uint8_t i = 0 ; i<4; i++){
-			data->tm1Period += (uint32_t)sdCard->rtext[0+i]<<(8*i);
+			data->adcAPeriod += (uint32_t)sdCard->rtext[0+i]<<(8*i);
 		}
-		data->tm2Div = sdCard->rtext[4];
-		data->tm2Period = 0;
+		data->adcADiv = sdCard->rtext[4];
+		data->adcBPeriod = 0;
 		for(uint8_t i = 0 ; i<2; i++){
-			data->tm2Period += (uint16_t)sdCard->rtext[5+i]<<(8*i);
+			data->adcBPeriod += (uint16_t)sdCard->rtext[5+i]<<(8*i);
 		}
-		data->tm2Div = sdCard->rtext[7];
+		data->adcBDiv = sdCard->rtext[7];
 
 		//ADC1
 		data->numAdcCH[0] = sdCard->rtext[8];
-		data->adc1nbSeries = sdCard->rtext[9];
+		data->adcAnbSeries = sdCard->rtext[9];
 		data->AV0 = sdCard->rtext[10];
 		data->Amp0 = sdCard->rtext[11];
 		data->Amp1 = sdCard->rtext[12];
 		//ADC3
 		data->numAdcCH[1] = sdCard->rtext[13];
-		data->adc3nbSeries = sdCard->rtext[14];
+		data->adcBnbSeries = sdCard->rtext[14];
 		data->AV2 = sdCard->rtext[15];
 		data->Amp2 = sdCard->rtext[16];
 		data->Amp3 = sdCard->rtext[17];
@@ -68,8 +68,8 @@ void Controller::appliParam()
 {
 	GPIO_InitTypeDef GPIO_InitStruct = {0};
 
-	htim2.Init.Period = data->tm1Period;
-	switch (data->tm1Div){
+	htim2.Init.Period = data->adcAPeriod;
+	switch (data->adcADiv){
 	case 0:
 		htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
 		break;
@@ -85,8 +85,8 @@ void Controller::appliParam()
 		Error_Handler();
 	}
 
-	htim3.Init.Period = data->tm2Period;
-	switch (data->tm2Div){
+	htim3.Init.Period = data->adcBPeriod;
+	switch (data->adcBDiv){
 	case 0:
 		htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
 		break;
@@ -206,17 +206,17 @@ void Controller::appliParam()
 
 void Controller::saveAllParam(){
 	sdCard->openParam();
-	sdCard->saveParam(0, (uint8_t*) &data->tm1Period,4);
-	sdCard->saveParam(4, &data->tm1Div,1);
-	sdCard->saveParam(5, (uint8_t*) &data->tm2Period,2);
-	sdCard->saveParam(7, &data->tm2Div,1);
+	sdCard->saveParam(0, (uint8_t*) &data->adcAPeriod,4);
+	sdCard->saveParam(4, &data->adcADiv,1);
+	sdCard->saveParam(5, (uint8_t*) &data->adcBPeriod,2);
+	sdCard->saveParam(7, &data->adcBDiv,1);
 	sdCard->saveParam(8, &data->numAdcCH[0],1);
-	sdCard->saveParam(9, &data->adc1nbSeries,1);
+	sdCard->saveParam(9, &data->adcAnbSeries,1);
 	sdCard->saveParam(10, &data->AV0,1);
 	sdCard->saveParam(11, &data->Amp0,1);
 	sdCard->saveParam(12, &data->Amp1,1);
 	sdCard->saveParam(13, &data->numAdcCH[1],1);
-	sdCard->saveParam(14, &data->adc3nbSeries,1);
+	sdCard->saveParam(14, &data->adcBnbSeries,1);
 	sdCard->saveParam(15, &data->AV2,1);
 	sdCard->saveParam(16, &data->Amp2,1);
 	sdCard->saveParam(17, &data->Amp3,1);
@@ -272,14 +272,14 @@ void Controller::stopData()
 		HAL_TIM_OC_Stop_IT(&htim3, TIM_CHANNEL_4);   // For ADC3
 	}
 
-	if((sdCard->lifeData(0, data->adc1nbSeries, 0)==FR_OK) || (sdCard->lifeData(1, data->adc3nbSeries, 0)==FR_OK)){
+	if((sdCard->lifeData(0, data->adcAnbSeries, 0)==FR_OK) || (sdCard->lifeData(1, data->adcBnbSeries, 0)==FR_OK)){
 		sdCard->closeData();
 
 		sdCard->openParam();
 		if(data->numAdcCH [0])
-			sdCard->saveParam(9, &data->adc1nbSeries, 1);
+			sdCard->saveParam(9, &data->adcAnbSeries, 1);
 		if(data->numAdcCH [1])
-			sdCard->saveParam(14, &data->adc3nbSeries, 1);
+			sdCard->saveParam(14, &data->adcBnbSeries, 1);
 		sdCard->closeParam();
 	}
 }
@@ -297,25 +297,25 @@ void Controller::dataRecept()
 
 	case 0x01://tm time
 		if(RX_buffer[1] == 0){
-			data->tm1Period = 0;
+			data->adcAPeriod = 0;
 			for(uint8_t i = 0 ; i<4; i++){
-				data->tm1Period += (uint32_t)RX_buffer[2+i]<<(8*i);
+				data->adcAPeriod += (uint32_t)RX_buffer[2+i]<<(8*i);
 			}
-			data->tm1Div =  RX_buffer[6];
+			data->adcADiv =  RX_buffer[6];
 
 			sdCard->openParam();
-			sdCard->saveParam(0, (uint8_t*) &data->tm1Period,4);
-			sdCard->saveParam(4, &data->tm1Div,1);
+			sdCard->saveParam(0, (uint8_t*) &data->adcAPeriod,4);
+			sdCard->saveParam(4, &data->adcADiv,1);
 			sdCard->closeParam();
 
 			messageOK();
 		} else if(RX_buffer[1] == 1){
-			data->tm2Period = RX_buffer[2] + (RX_buffer[3]<<8);
-			data->tm2Div =  RX_buffer[6];
+			data->adcBPeriod = RX_buffer[2] + (RX_buffer[3]<<8);
+			data->adcBDiv =  RX_buffer[6];
 
 			sdCard->openParam();
-			sdCard->saveParam(5, (uint8_t*) &data->tm2Period,2);
-			sdCard->saveParam(7, &data->tm2Div,1);
+			sdCard->saveParam(5, (uint8_t*) &data->adcBPeriod,2);
+			sdCard->saveParam(7, &data->adcBDiv,1);
 			sdCard->closeParam();
 
 			messageOK();
@@ -697,13 +697,13 @@ void Controller::dataRecept()
 	case 0x08://delete
 		sdCard->openParam();
 
-		sdCard->deleteData(data->adc1nbSeries, data->adc3nbSeries);
-		data->adc1nbSeries = 0;
-		data->adc3nbSeries = 0;
+		sdCard->deleteData(data->adcAnbSeries, data->adcBnbSeries);
+		data->adcAnbSeries = 0;
+		data->adcBnbSeries = 0;
 
 
-		sdCard->saveParam(9, &data->adc1nbSeries,1);
-		sdCard->saveParam(14, &data->adc3nbSeries,1);
+		sdCard->saveParam(9, &data->adcAnbSeries,1);
+		sdCard->saveParam(14, &data->adcBnbSeries,1);
 		sdCard->closeParam();
 
 		messageOK();
@@ -727,11 +727,11 @@ void Controller::dataRecept()
 		TX_buffer[1] = RX_buffer[1];
 		if(RX_buffer[1] == 0){
 			for(uint8_t i = 0 ; i<2; i++){
-				TX_buffer[3-i] = data->adc1nbSeries>>(8*i);
+				TX_buffer[3-i] = data->adcAnbSeries>>(8*i);
 			}
 		}else if(RX_buffer[1] == 1){
 			for(uint8_t i = 0 ; i<2; i++){
-				TX_buffer[3-i] = data->adc3nbSeries>>(8*i);
+				TX_buffer[3-i] = data->adcBnbSeries>>(8*i);
 			}
 		}
 		CDC_Transmit_FS(TX_buffer, 4);
@@ -742,14 +742,14 @@ void Controller::dataRecept()
 		TX_buffer[1] = RX_buffer[1];
 		if(RX_buffer[1] == 0){
 			for(uint8_t i = 0 ; i<4; i++){
-				TX_buffer[5-i] = data->tm1Period>>(8*i);
+				TX_buffer[2+i] = data->adcAPeriod>>(8*i);
 			}
-			TX_buffer[6] = data->tm1Div;
+			TX_buffer[6] = data->adcADiv;
 		}else if(RX_buffer[1] == 1){
 			for(uint8_t i = 0 ; i<4; i++){
-				TX_buffer[5-i] = data->tm2Period>>(8*i);
+				TX_buffer[2+i] = data->adcBPeriod>>(8*i);
 			}
-			TX_buffer[6] = data->tm2Div;
+			TX_buffer[6] = data->adcBDiv;
 		}
 		CDC_Transmit_FS(TX_buffer, 7);
 		break;
@@ -764,7 +764,7 @@ void Controller::dataRecept()
 			}else if(RX_buffer[2]==1){
 				TX_buffer[4] = data->Amp1;
 			}
-		} else if(RX_buffer[1] == 1){
+		}else if(RX_buffer[1] == 1){
 			if(RX_buffer[2] == 0){
 				TX_buffer[3] = data->AV2;
 				TX_buffer[4] = data->Amp2;

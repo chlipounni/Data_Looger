@@ -53,11 +53,6 @@ private:
 	cardSDRW* sdCard;
 	appData* data;
 
-	uint16_t value[60];
-	uint32_t midAdd [2] ={0,0};
-	uint8_t offset;
-
-	void divMidMinMax(uint8_t adc,uint8_t divVer, uint16_t* val);
 	void messageOK();
 	void messageNOK();
 

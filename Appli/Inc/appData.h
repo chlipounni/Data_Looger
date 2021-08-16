@@ -17,13 +17,13 @@ public:
 
 	//dataSave
 	uint8_t numAdcCH [2] = {2,2};
-	uint8_t adc1nbSeries = 0;
-	uint8_t adc3nbSeries = 0;
+	uint8_t adcAnbSeries = 0;
+	uint8_t adcBnbSeries = 0;
 
-	uint32_t tm1Period = 4800;
-	uint8_t tm1Div = 0;
-	uint16_t tm2Period = 4800;
-	uint8_t tm2Div = 0;
+	uint32_t adcAPeriod = 4800;
+	uint8_t adcADiv = 0;
+	uint16_t adcBPeriod = 4800;
+	uint8_t adcBDiv = 0;
 
 	uint8_t AV0 = 1;
 	uint8_t Amp0 = 0;
@@ -32,6 +32,8 @@ public:
 	uint8_t AV2 = 1;
 	uint8_t Amp2 = 0;
 	uint8_t Amp3 = 0;
+
+	uint16_t nullVal = 0;
 };
 
 #endif /* APPDATA_H_ */

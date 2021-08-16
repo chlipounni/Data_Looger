@@ -27,7 +27,7 @@ public:
 	FRESULT lifeData(uint8_t adc, uint8_t vers,uint8_t div);
 	uint16_t freeSize();
 	void sync(uint8_t file);
-	void deleteData(uint8_t nbVersTM1, uint8_t nbVersTM2);
+	void deleteData(uint8_t nbVersADCA, uint8_t nbVersADCB);
 	void closeData();
 
 	void openDataFile(uint8_t adc, uint8_t vers, uint8_t div);
