@@ -1,8 +1,6 @@
 /*
  * cardSDRW.h
  *
- *  Created on: 26 mai 2021
- *      Author: antoine
  */
 
 #ifndef PROG_CARDSDRW_H_

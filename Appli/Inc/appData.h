@@ -1,8 +1,5 @@
 /*
  * appData.h
- *
- *  Created on: 26 mai 2021
- *      Author: antoine
  */
 
 #ifndef APPDATA_H_
