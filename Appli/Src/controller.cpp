@@ -297,27 +297,25 @@ void Controller::dataRecept()
 
 	case 0x01://tm time
 		if(RX_buffer[1] == 0){
-			data->adcAPeriod = 0;
+
+			uint32_t period =0;
 			for(uint8_t i = 0 ; i<4; i++){
-				data->adcAPeriod += (uint32_t)RX_buffer[2+i]<<(8*i);
+				 period += (uint32_t)RX_buffer[2+i]<<(8*i);
 			}
-			data->adcADiv =  RX_buffer[6];
 
 			sdCard->openParam();
-			sdCard->saveParam(0, (uint8_t*) &data->adcAPeriod,4);
-			sdCard->saveParam(4, &data->adcADiv,1);
+			sdCard->saveParam(0, (uint8_t*) &period,4);
+			sdCard->saveParam(4, &RX_buffer[6],1);
 			sdCard->closeParam();
-
 			messageOK();
+
 		} else if(RX_buffer[1] == 1){
-			data->adcBPeriod = RX_buffer[2] + (RX_buffer[3]<<8);
-			data->adcBDiv =  RX_buffer[6];
+			uint16_t period = RX_buffer[2] + (RX_buffer[3]<<8);
 
 			sdCard->openParam();
-			sdCard->saveParam(5, (uint8_t*) &data->adcBPeriod,2);
-			sdCard->saveParam(7, &data->adcBDiv,1);
+			sdCard->saveParam(5, (uint8_t*) &period,2);
+			sdCard->saveParam(7, &RX_buffer[6],1);
 			sdCard->closeParam();
-
 			messageOK();
 		}else{
 			messageNOK();
@@ -326,20 +324,16 @@ void Controller::dataRecept()
 
 	case 0x02://nb CH use
 		if(RX_buffer[1] == 0){
-			data->numAdcCH[0] = RX_buffer[2];
 
 			sdCard->openParam();
-			sdCard->saveParam(8, &data->numAdcCH[0],1);
+			sdCard->saveParam(8, &RX_buffer[2],1);
 			sdCard->closeParam();
-
 			messageOK();
 		} else if(RX_buffer[1] == 1){
-			data->numAdcCH[1] = RX_buffer[2];
 
 			sdCard->openParam();
-			sdCard->saveParam(13, &data->numAdcCH[1],1);
+			sdCard->saveParam(13, &RX_buffer[2],1);
 			sdCard->closeParam();
-
 			messageOK();
 		}else{
 			messageNOK();
@@ -349,19 +343,16 @@ void Controller::dataRecept()
 	case 0x03://param ch
 		if(RX_buffer[1] == 0){
 			if(RX_buffer[2] == 0){
-				data->AV0=RX_buffer[3];
-				data->Amp0=RX_buffer[4];
 
 				sdCard->openParam();
-				sdCard->saveParam(10, &data->AV0,1);
-				sdCard->saveParam(11, &data->Amp0,1);
+				sdCard->saveParam(10, &RX_buffer[3],1);
+				sdCard->saveParam(11, &RX_buffer[4],1);
 				sdCard->closeParam();
-
 				messageOK();
 			}else if(RX_buffer[2]==1){
-				data->Amp1=RX_buffer[4];
+
 				sdCard->openParam();
-				sdCard->saveParam(12, &data->Amp1,1);
+				sdCard->saveParam(12, &RX_buffer[4],1);
 				sdCard->closeParam();
 				messageOK();
 			}else{
@@ -369,23 +360,20 @@ void Controller::dataRecept()
 			}
 		} else if(RX_buffer[1] == 1){
 			if(RX_buffer[2] == 0){
-				data->AV2=RX_buffer[3];
-				data->Amp2=RX_buffer[4];
 
 				sdCard->openParam();
-				sdCard->saveParam(15, &data->AV2,1);
-				sdCard->saveParam(16, &data->Amp2,1);
+				sdCard->saveParam(15, &RX_buffer[3],1);
+				sdCard->saveParam(16, &RX_buffer[4],1);
 				sdCard->closeParam();
-
 				messageOK();
+
 			}else if(RX_buffer[2]==1){
-				data->Amp3=RX_buffer[4];
 
 				sdCard->openParam();
-				sdCard->saveParam(17, &data->Amp3,1);
+				sdCard->saveParam(17, &RX_buffer[4],1);
 				sdCard->closeParam();
-
 				messageOK();
+
 			}else{
 				messageNOK();
 			}
